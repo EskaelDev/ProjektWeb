@@ -1,4 +1,6 @@
-<mat-card class="login-card">
+<div class="container-lg">
+<img class="image" src="../../assets/img/popcorn.png" alt=""/>
+<mat-card class="login-card float-right">
   <mat-card-header>
     <mat-card-title>Sign in</mat-card-title>
   </mat-card-header>
@@ -19,12 +21,10 @@
       </mat-form-field>
     </form>
   </mat-card-content>
-  <!--<mat-card-footer>-->
-    <!--<div>Haven't you account? <button mat-raised-button color="accent" class="sign-up">Sing Up</button></div>-->
-  <!--</mat-card-footer>-->
   <mat-card-actions align="end">
     <div>Haven't you account? <button mat-raised-button color="accent" class="sign-up">Sign Up</button></div>
     <div class="spacer"></div>
     <button type="submit" mat-raised-button color="primary" mat-button [disabled]="!loginForm.valid">LOG IN</button>
   </mat-card-actions>
 </mat-card>
+</div>
