@@ -1,18 +1,17 @@
 <div class="container-lg">
 <img class="image" src="../../assets/img/popcorn.png" alt=""/>
-<mat-card class="login-card float-right">
+<mat-card class="login-card float-right" *ngIf="isLoginForm">
   <mat-card-header>
-    <mat-card-title>Sign in</mat-card-title>
+    <mat-card-title>Sign In</mat-card-title>
   </mat-card-header>
-  <mat-card-content>
-    <form [formGroup]="loginForm" (ngSubmit)="save()">
-      <mat-form-field appearance="fill">
+  <mat-card-content class="login">
+    <form [formGroup]="loginForm" (ngSubmit)="login()">
+      <mat-form-field class="login-field" appearance="fill">
         <mat-label>Enter your email</mat-label>
         <input matInput placeholder="pat@example.com" formControlName="email">
-        <mat-error *ngIf="loginForm.invalid">{{getErrorMessage()}}</mat-error>
       </mat-form-field>
 
-      <mat-form-field appearance="fill">
+      <mat-form-field class="login-field" appearance="fill">
         <mat-label>Enter your password</mat-label>
         <input matInput [type]="hide ? 'password' : 'text'" formControlName="password">
         <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
@@ -22,9 +21,49 @@
     </form>
   </mat-card-content>
   <mat-card-actions align="end">
-    <div>Haven't you account? <button mat-raised-button color="accent" class="sign-up">Sign Up</button></div>
+    <div><span>Haven't you account?</span><button mat-raised-button color="accent" class="sign-up" (click)="signUpClicked()">Sign Up</button></div>
     <div class="spacer"></div>
     <button type="submit" mat-raised-button color="primary" mat-button [disabled]="!loginForm.valid">LOG IN</button>
+  </mat-card-actions>
+</mat-card>
+<mat-card class="create-card float-right" *ngIf="!isLoginForm">
+  <mat-card-header>
+    <mat-card-title>Sign Up</mat-card-title>
+  </mat-card-header>
+  <mat-card-content class="create-content">
+    <form [formGroup]="createForm" (ngSubmit)="save()">
+      <mat-form-field class="create-field" appearance="fill">
+        <mat-label>Enter your full name</mat-label>
+        <input matInput placeholder="Jan Kowalski" formControlName="name">
+      </mat-form-field>
+
+      <mat-form-field class="create-field" appearance="fill">
+        <mat-label>Enter your email</mat-label>
+        <input matInput placeholder="pat@example.com" formControlName="email">
+      </mat-form-field>
+
+      <mat-form-field class="create-field" appearance="fill">
+        <mat-label>Enter your password</mat-label>
+        <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password">
+        <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
+          <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+      </mat-form-field>
+
+      <mat-form-field class="create-field" appearance="fill">
+        <mat-label>Repeat your password</mat-label>
+        <input matInput [type]="hideConfirmPassword ? 'password' : 'text'" formControlName="confirmPassword">
+        <button mat-icon-button matSuffix (click)="hideConfirmPassword = !hideConfirmPassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hideConfirmPassword">
+          <mat-icon>{{hideConfirmPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+        <mat-error *ngIf="c.confirmPassword.errors?.mustMatch">Passwords must match</mat-error>
+      </mat-form-field>
+    </form>
+  </mat-card-content>
+  <mat-card-actions align="end" class="create-actions">
+    <div><span>Back to</span><button mat-raised-button color="accent" class="sign-up" (click)="signInClicked()">Sign In</button></div>
+    <div class="spacer"></div>
+    <button type="submit" mat-raised-button color="primary" mat-button [disabled]="!isFormValid()">CREATE</button>
   </mat-card-actions>
 </mat-card>
 </div>

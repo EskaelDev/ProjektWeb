@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, Validators} from '@angular/forms';
+import {User} from '../model/user';
+import {MustMatch} from '../services/must-match';
 
 @Component({
   selector: 'app-login',
@@ -11,17 +13,62 @@ export class LoginComponent implements OnInit {
     email: ['', [Validators.required, Validators.email]],
     password: ['', Validators.required]
   });
-  hide = true;
+
+  createForm = this.fb.group({
+    name: ['', [Validators.required]],
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', Validators.required],
+    confirmPassword: ['', Validators.required]
+  }, {
+    validator: MustMatch('password', 'confirmPassword')
+  });
+
+  hidePassword = true;
+  hideConfirmPassword = true;
+  isLoginForm = true;
 
   constructor(private fb: FormBuilder) { }
 
   ngOnInit() {
   }
 
-  save() {
+  get f() { return this.loginForm.controls; }
+  get c() { return this.createForm.controls; }
 
+  login() {
+    // this.authenticationService.login(this.f.username.value, this.f.password.value)
+    //   .pipe(first())
+    //   .subscribe(
+    //     data => {
+    //       this.router.navigate([this.returnUrl]);
+    //     },
+    //     error => {
+    //       this.error = error;
+    //       this.loading = false;
+    //     });
   }
 
-  getErrorMessage() {
+  save() {
+    const user: User = {
+      name: this.c.name.value,
+      email: this.c.email.value,
+      password: this.c.password.value
+    };
+  }
+
+  arePasswordsTheSame(): boolean {
+    return this.c.password.value === this.c.confirmPassword.value;
+  }
+
+  signUpClicked() {
+    this.isLoginForm = false;
+  }
+
+  signInClicked() {
+    this.isLoginForm = true;
+  }
+
+  isFormValid() {
+    return this.arePasswordsTheSame() && this.createForm.valid;
   }
 }
