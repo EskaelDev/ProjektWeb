@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, Validators} from '@angular/forms';
-import {User} from '../model/user';
-import {MustMatch} from '../services/must-match';
+import {User} from '../_models/user';
+import {MustMatch} from '../_helpers/must-match';
 
 @Component({
   selector: 'app-login',
