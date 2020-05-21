@@ -1,11 +1,11 @@
 <div class="container-lg">
 <img class="image" src="../../assets/img/popcorn.png" alt=""/>
 <mat-card class="login-card float-right" *ngIf="isLoginForm">
+  <form [formGroup]="loginForm" (ngSubmit)="login()">
   <mat-card-header>
     <mat-card-title>Sign In</mat-card-title>
   </mat-card-header>
   <mat-card-content class="login">
-    <form [formGroup]="loginForm" (ngSubmit)="login()">
       <mat-form-field class="login-field" appearance="fill">
         <mat-label>Enter your email</mat-label>
         <input matInput placeholder="pat@example.com" formControlName="email">
@@ -18,20 +18,20 @@
           <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
         </button>
       </mat-form-field>
-    </form>
   </mat-card-content>
   <mat-card-actions align="end">
     <div><span>Haven't you account?</span><button mat-raised-button color="accent" class="sign-up" (click)="signUpClicked()">Sign Up</button></div>
     <div class="spacer"></div>
     <button type="submit" mat-raised-button color="primary" mat-button [disabled]="!loginForm.valid">LOG IN</button>
   </mat-card-actions>
+  </form>
 </mat-card>
 <mat-card class="create-card float-right" *ngIf="!isLoginForm">
+  <form [formGroup]="createForm" (ngSubmit)="save()">
   <mat-card-header>
     <mat-card-title>Sign Up</mat-card-title>
   </mat-card-header>
   <mat-card-content class="create-content">
-    <form [formGroup]="createForm" (ngSubmit)="save()">
       <mat-form-field class="create-field" appearance="fill">
         <mat-label>Enter your full name</mat-label>
         <input matInput placeholder="Jan Kowalski" formControlName="name">
@@ -58,12 +58,12 @@
         </button>
         <mat-error *ngIf="c.confirmPassword.errors?.mustMatch">Passwords must match</mat-error>
       </mat-form-field>
-    </form>
   </mat-card-content>
   <mat-card-actions align="end" class="create-actions">
     <div><span>Back to</span><button mat-raised-button color="accent" class="sign-up" (click)="signInClicked()">Sign In</button></div>
     <div class="spacer"></div>
     <button type="submit" mat-raised-button color="primary" mat-button [disabled]="!isFormValid()">CREATE</button>
   </mat-card-actions>
+  </form>
 </mat-card>
 </div>

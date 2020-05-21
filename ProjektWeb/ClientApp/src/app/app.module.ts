@@ -20,6 +20,10 @@ import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material';
 import { LoginComponent } from './login/login.component';
 import {ReactiveFormsModule} from '@angular/forms';
+import {fakeBackendProvider} from './_helpers/fake-backend-interceptor';
+import {ErrorInterceptor} from './_helpers/error-interceptor';
+import {JwtInterceptor} from './_helpers/jwt-interceptor';
+import {AuthGuard} from './_helpers/auth.guard';
 
 @NgModule({
   declarations: [
@@ -36,8 +40,10 @@ import {ReactiveFormsModule} from '@angular/forms';
     FormsModule,
     RouterModule.forRoot([
       { path: '', component: LoginComponent, pathMatch: 'full' },
-      { path: 'counter', component: CounterComponent },
-      { path: 'fetch-data', component: FetchDataComponent },
+      { path: 'counter', component: CounterComponent, canActivate: [AuthGuard] },
+
+      // otherwise redirect to home
+      { path: '**', redirectTo: '' }
     ]),
     ReactiveFormsModule,
     BrowserAnimationsModule,
@@ -50,7 +56,13 @@ import {ReactiveFormsModule} from '@angular/forms';
     MatCardModule,
     MatInputModule
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+
+    // provider used to create fake backend
+    fakeBackendProvider
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
