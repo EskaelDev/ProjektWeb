@@ -5,7 +5,10 @@ VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjektWeb", "ProjektWeb.csproj", "{592152DB-19E2-49CA-A086-74F904BB8D96}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjektWebTest", "..\ProjektWebTest\ProjektWebTest.csproj", "{FE54686D-783E-45B0-919F-BC138B3F354D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjektWebTest", "..\ProjektWebTest\ProjektWebTest.csproj", "{FE54686D-783E-45B0-919F-BC138B3F354D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{592152DB-19E2-49CA-A086-74F904BB8D96} = {592152DB-19E2-49CA-A086-74F904BB8D96}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
