@@ -57,6 +57,8 @@ namespace ProjektWeb
             services.AddScoped<IUserService, UserService>();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddSingleton<DatabaseContext, DatabaseContext>();
+            services.AddSingleton<DatabaseService, DatabaseService>();
 
             services.AddControllersWithViews();
             // In production, the Angular files will be served from this directory
@@ -117,6 +119,14 @@ namespace ProjektWeb
                     spa.UseAngularCliServer(npmScript: "start");
                 }
             });
+
+            using (var scope = app.ApplicationServices.CreateScope())
+            {
+                using (var context = scope.ServiceProvider.GetService<DatabaseContext>())
+                {
+                    context.Database.EnsureCreated();
+                }
+            }
         }
     }
 }
