@@ -58,6 +58,7 @@ namespace ProjektWeb
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<DatabaseContext, DatabaseContext>();
+            services.AddSingleton<DatabaseService, DatabaseService>();
 
             services.AddControllersWithViews();
             // In production, the Angular files will be served from this directory

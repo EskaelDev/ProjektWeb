@@ -10,11 +10,9 @@ namespace ProjektWeb.Data.Models.Database
     public class Tag
     {
         [Key]
+        [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int TagId { get; set; }
         public string Name { get; set; }
-
-        [ForeignKey("Element")]
         public int ElementId { get; set; }
-        public Element Element { get; set; }
     }
 }

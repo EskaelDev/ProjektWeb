@@ -17,6 +17,7 @@ namespace ProjektWeb
 
         public DbSet<Element> Elements { get; set; }
         public DbSet<Rate> Rates { get; set; }
+        public DbSet<Tag> Tags { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {

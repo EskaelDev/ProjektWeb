@@ -1,4 +1,5 @@
-﻿using ProjektWeb.Data.Models.Database;
+﻿using Microsoft.EntityFrameworkCore;
+using ProjektWeb.Data.Models.Database;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,6 +31,18 @@ namespace ProjektWeb.Services
             return databaseContext.Elements.Where(x => x.Name == name).FirstOrDefault();
         }
 
+        public void AddElement(Element element)
+        {
+            databaseContext.Elements.Add(element);
+            databaseContext.SaveChanges();
+        }
+
+        public void AddTagToElementById(int elementId, string tag)
+        {
+            databaseContext.Tags.Add(new Tag() { ElementId = elementId, Name = tag.ToLower()});
+            databaseContext.SaveChanges();
+        }
+
         public IEnumerable<Rate> GetAllRates()
         {
             return databaseContext.Rates.ToList();
@@ -40,15 +53,26 @@ namespace ProjektWeb.Services
             return databaseContext.Rates.Where(x => x.Author == author).ToList();
         }
 
+        public IEnumerable<Rate> GetRatesByElementId(int elementId)
+        {
+            return databaseContext.Rates.Where(x => x.ElementId == elementId).ToList();
+        }
+
+        public IEnumerable<Tag> GetTagsByElementId(int elementId)
+        {
+            return databaseContext.Tags.Where(x => x.ElementId == elementId).ToList();
+        }
+
         public IEnumerable<Element> GetElementsContainingTag(string tag)
         {
-            return databaseContext.Elements.Where(x => x.Tags.Where(x => x.Name == tag).Count() > 0).ToList();
+            List<int> elementIds = databaseContext.Tags.Where(x => x.Name == tag).Select(x => x.ElementId).ToList();
+            return databaseContext.Elements.Where(x => elementIds.Contains(x.ElementId)).ToList();
         }
 
         public IEnumerable<string> GetAllTags()
         {
             List<string> tags = new List<string>();
-            databaseContext.Elements.ToList().ForEach(x => x.Tags.ToList().ForEach(x => tags.Add(x.Name)));
+            databaseContext.Tags.ToList().ForEach(x => tags.Add(x.Name));
             return tags.Distinct();
         }
     }
