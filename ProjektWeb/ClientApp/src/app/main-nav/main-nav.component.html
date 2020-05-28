@@ -25,7 +25,8 @@
       <span class="spacer"></span>
       <a mat-button="" href="#"><span class="mat-button-wrapper">About</span></a>
       <a mat-button="" href="#"><span class="mat-button-wrapper">Contact</span></a>
-      <a mat-button="" href="#"><span class="mat-button-wrapper">Login</span></a>
+      <a mat-button="" href="#" *ngIf="isLoggedIn" (click)="logout()"><span class="mat-button-wrapper">Logout</span></a>
+      <a mat-button="" href="#" *ngIf="!isLoggedIn"><span class="mat-button-wrapper">Login</span></a>
     </mat-toolbar>
     <ng-content></ng-content>
   </mat-sidenav-content>

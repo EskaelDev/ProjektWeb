@@ -10,16 +10,20 @@ import {AuthenticationService} from './_services/authentication-service';
 export class AppComponent {
   title = 'app';
   currentUser: User;
+  isLoggedIn: Boolean = false;
 
   constructor(
     private router: Router,
     private authenticationService: AuthenticationService
   ) {
-    this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
+    this.authenticationService.currentUser.subscribe(x => {
+      this.currentUser = x;
+      this.isLoggedIn = this.currentUser != null;
+    });
   }
 
-  logout() {
+  logout($event) {
     this.authenticationService.logout();
-    this.router.navigate(['/login']);
+    this.router.navigate(['/']);
   }
 }

@@ -1,6 +1,5 @@
 <body>
-  <!--<app-nav-menu></app-nav-menu>-->
-  <app-main-nav>
+  <app-main-nav [isLoggedIn] = "isLoggedIn" (logoutEvent)="logout($event)">
     <div class="container">
       <router-outlet></router-outlet>
     </div>

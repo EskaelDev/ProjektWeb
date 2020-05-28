@@ -4,7 +4,7 @@ import {Observable, of, throwError } from 'rxjs';
 import {delay, dematerialize, materialize, mergeMap} from 'rxjs/operators';
 import {User} from '../_models/User';
 
-const users: User[] = [{ email: 'test@gmail.com', password: 'test', name: 'Test' }];
+ const users: User[] = [{ email: 'test@gmail.com', password: 'test', name: 'Test' }];
 
 @Injectable()
 export class FakeBackendInterceptor implements HttpInterceptor {
@@ -25,6 +25,8 @@ export class FakeBackendInterceptor implements HttpInterceptor {
           return authenticate();
         case url.endsWith('/users') && method === 'GET':
           return getUsers();
+        case url.endsWith('/users') && method === 'POST':
+          return createUser();
         default:
           // pass through any requests not handled above
           return next.handle(request);
@@ -46,6 +48,14 @@ export class FakeBackendInterceptor implements HttpInterceptor {
     function getUsers() {
       if (!isLoggedIn()) { return unauthorized(); }
       return ok(users);
+    }
+
+    function createUser() {
+      const user: User = body;
+      const isAlreadyHere = users.find(u => u.email === user.email);
+      if (isAlreadyHere) { return error('User with this email already exist'); }
+      users.push(user);
+      return ok(user);
     }
 
     // helper functions

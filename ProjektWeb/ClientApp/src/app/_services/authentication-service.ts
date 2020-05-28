@@ -34,4 +34,11 @@ export class AuthenticationService {
     localStorage.removeItem('currentUser');
     this.currentUserSubject.next(null);
   }
+
+  create(user: User) {
+    return this.http.post<User>(`${environment.apiUrl}/users`, user)
+      .pipe(
+
+  );
+  }
 }

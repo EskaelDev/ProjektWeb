@@ -9,7 +9,7 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {MatButtonModule} from '@angular/material';
+import {MatButtonModule, MatDialogModule} from '@angular/material';
 import { MainNavComponent } from './main-nav/main-nav.component';
 import { LayoutModule } from '@angular/cdk/layout';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -24,6 +24,7 @@ import {fakeBackendProvider} from './_helpers/fake-backend-interceptor';
 import {ErrorInterceptor} from './_helpers/error-interceptor';
 import {JwtInterceptor} from './_helpers/jwt-interceptor';
 import {AuthGuard} from './_helpers/auth.guard';
+import { DialogComponent } from './dialog/dialog.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import {AuthGuard} from './_helpers/auth.guard';
     CounterComponent,
     FetchDataComponent,
     MainNavComponent,
-    LoginComponent
+    LoginComponent,
+    DialogComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -40,6 +42,7 @@ import {AuthGuard} from './_helpers/auth.guard';
     FormsModule,
     RouterModule.forRoot([
       { path: '', component: LoginComponent, pathMatch: 'full' },
+      { path: 'login', component: LoginComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent, canActivate: [AuthGuard] },
 
       // otherwise redirect to home
@@ -54,7 +57,8 @@ import {AuthGuard} from './_helpers/auth.guard';
     MatIconModule,
     MatListModule,
     MatCardModule,
-    MatInputModule
+    MatInputModule,
+    MatDialogModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
@@ -63,6 +67,7 @@ import {AuthGuard} from './_helpers/auth.guard';
     // provider used to create fake backend
     fakeBackendProvider
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [DialogComponent]
 })
 export class AppModule { }
