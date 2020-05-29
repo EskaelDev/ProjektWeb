@@ -22,7 +22,10 @@
   <mat-card-actions align="end">
     <div><span>Haven't you account?</span><button mat-raised-button color="accent" class="sign-up" (click)="signUpClicked()">Sign Up</button></div>
     <div class="spacer"></div>
-    <button type="submit" mat-raised-button color="primary" mat-button [disabled]="!loginForm.valid">LOG IN</button>
+    <button type="submit" mat-raised-button color="primary" mat-button [disabled]="!loginForm.valid">
+      <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+      LOG IN
+    </button>
   </mat-card-actions>
   </form>
 </mat-card>
@@ -62,7 +65,10 @@
   <mat-card-actions align="end" class="create-actions">
     <div><span>Back to</span><button mat-raised-button color="accent" class="sign-up" (click)="signInClicked()">Sign In</button></div>
     <div class="spacer"></div>
-    <button type="submit" mat-raised-button color="primary" mat-button [disabled]="!isFormValid()">CREATE</button>
+    <button type="submit" mat-raised-button color="primary" mat-button [disabled]="!isFormValid()">
+      <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+      CREATE
+    </button>
   </mat-card-actions>
   </form>
 </mat-card>

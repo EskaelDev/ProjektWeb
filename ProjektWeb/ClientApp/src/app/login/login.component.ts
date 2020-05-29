@@ -8,6 +8,7 @@ import {first} from 'rxjs/operators';
 import {UserService} from '../_services/user-service';
 import {MatDialog} from '@angular/material';
 import {DialogComponent} from '../dialog/dialog.component';
+import {Role} from '../_models/role';
 
 @Component({
   selector: 'app-login',
@@ -47,7 +48,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     // get return url from route parameters or default to '/'
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '';
   }
 
   get f() { return this.loginForm.controls; }
@@ -59,7 +60,7 @@ export class LoginComponent implements OnInit {
       .pipe(first())
       .subscribe(
         data => {
-          this.router.navigate(['/counter']);
+          this.router.navigate([this.returnUrl]);
           },
         error => {
           this.openDialog(error);
@@ -73,7 +74,7 @@ export class LoginComponent implements OnInit {
       .pipe(first())
       .subscribe(
         data => {
-          this.router.navigate(['/counter']);
+          this.router.navigate([this.returnUrl]);
         },
         error => {
           this.openDialog(error);
@@ -82,7 +83,7 @@ export class LoginComponent implements OnInit {
   }
 
   save() {
-    this.loading = true; // TODO make sth with loading
+    this.loading = true;
     const user: User = {
       name: this.c.name.value,
       email: this.c.email.value,

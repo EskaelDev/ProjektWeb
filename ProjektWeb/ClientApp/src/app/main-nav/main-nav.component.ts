@@ -12,9 +12,10 @@ export class MainNavComponent {
 
   @Input()
   isLoggedIn: Boolean;
+  @Input()
+  isAdmin: Boolean;
 
   @Output() logoutEvent = new EventEmitter<any>();
-
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
       map(result => result.matches),

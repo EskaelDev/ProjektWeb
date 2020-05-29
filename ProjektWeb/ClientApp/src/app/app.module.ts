@@ -25,6 +25,9 @@ import {ErrorInterceptor} from './_helpers/error-interceptor';
 import {JwtInterceptor} from './_helpers/jwt-interceptor';
 import {AuthGuard} from './_helpers/auth.guard';
 import { DialogComponent } from './dialog/dialog.component';
+import { AdminPanelComponent } from './admin-panel/admin-panel.component';
+import {Role} from './_models/role';
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
   declarations: [
@@ -35,18 +38,21 @@ import { DialogComponent } from './dialog/dialog.component';
     MainNavComponent,
     LoginComponent,
     DialogComponent,
+    AdminPanelComponent,
+    HomeComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
     RouterModule.forRoot([
-      { path: '', component: LoginComponent, pathMatch: 'full' },
+      { path: '', component: HomeComponent, canActivate: [AuthGuard] },
       { path: 'login', component: LoginComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent, canActivate: [AuthGuard] },
+      { path: 'admin-panel', component: AdminPanelComponent, canActivate: [AuthGuard], data: {roles: [Role.Admin]} },
 
       // otherwise redirect to home
-      { path: '**', redirectTo: '' }
+      { path: '**', redirectTo: '/login' }
     ]),
     ReactiveFormsModule,
     BrowserAnimationsModule,

@@ -3,8 +3,9 @@ import {Injectable} from '@angular/core';
 import {Observable, of, throwError } from 'rxjs';
 import {delay, dematerialize, materialize, mergeMap} from 'rxjs/operators';
 import {User} from '../_models/User';
+import {Role} from '../_models/role';
 
- const users: User[] = [{ email: 'test@gmail.com', password: 'test', name: 'Test' }];
+ const users: User[] = [{ email: 'test@gmail.com', password: 'test', name: 'Test', role: Role.Admin }];
 
 @Injectable()
 export class FakeBackendInterceptor implements HttpInterceptor {
@@ -41,7 +42,8 @@ export class FakeBackendInterceptor implements HttpInterceptor {
       if (!user) { return error('Username or password is incorrect'); }
       return ok({
         name: user.name,
-        token: 'fake-jwt-token'
+        token: 'fake-jwt-token',
+        role: user.role
       });
     }
 
@@ -54,6 +56,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
       const user: User = body;
       const isAlreadyHere = users.find(u => u.email === user.email);
       if (isAlreadyHere) { return error('User with this email already exist'); }
+      user.role = Role.User;
       users.push(user);
       return ok(user);
     }
