@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import {Movie} from '../_models/movie';
+import {MovieService} from '../_services/movie-service';
+import {DialogComponent} from '../dialog/dialog.component';
+import {MatDialog} from '@angular/material';
 
 @Component({
   selector: 'app-home',
@@ -6,10 +10,31 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
+  movies: Movie[];
 
-  constructor() { }
+  constructor(private movieService: MovieService, private dialog: MatDialog) {
+    movieService.getAll().subscribe(
+      data => {
+        this.movies = data;
+        if (this.movies.length !== 0) {
+          const mov = this.movies[0];
+          for (let i = 0; i < 10; i++) {
+            this.movies.push(mov);
+          }
+        }
+      },
+      error => this.openDialog(error)
+    );
+  }
 
   ngOnInit() {
   }
 
+  private openDialog(error: string) {
+    this.dialog.open(DialogComponent, {
+      width: '30%',
+      minHeight: '200px',
+      data: {title: 'Error', content: error}
+    });
+  }
 }

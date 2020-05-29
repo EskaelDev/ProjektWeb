@@ -9,7 +9,7 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {MatButtonModule, MatDialogModule} from '@angular/material';
+import {MatButtonModule, MatChipsModule, MatDialogModule, MatGridListModule} from '@angular/material';
 import { MainNavComponent } from './main-nav/main-nav.component';
 import { LayoutModule } from '@angular/cdk/layout';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -28,6 +28,7 @@ import { DialogComponent } from './dialog/dialog.component';
 import { AdminPanelComponent } from './admin-panel/admin-panel.component';
 import {Role} from './_models/role';
 import { HomeComponent } from './home/home.component';
+import { MoviePanelComponent } from './home/movie-panel/movie-panel.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { HomeComponent } from './home/home.component';
     DialogComponent,
     AdminPanelComponent,
     HomeComponent,
+    MoviePanelComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -65,6 +67,8 @@ import { HomeComponent } from './home/home.component';
     MatCardModule,
     MatInputModule,
     MatDialogModule,
+    MatGridListModule,
+    MatChipsModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

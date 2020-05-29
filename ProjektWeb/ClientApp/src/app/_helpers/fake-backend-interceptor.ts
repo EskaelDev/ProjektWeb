@@ -4,8 +4,11 @@ import {Observable, of, throwError } from 'rxjs';
 import {delay, dematerialize, materialize, mergeMap} from 'rxjs/operators';
 import {User} from '../_models/User';
 import {Role} from '../_models/role';
+import {Movie} from '../_models/movie';
 
  const users: User[] = [{ email: 'test@gmail.com', password: 'test', name: 'Test', role: Role.Admin }];
+ const movies: Movie[] = [{ title: 'Suits', description: 'On the run from a drug deal gone bad, brilliant college dropout Mike Ross, finds himself working with Harvey Specter, one of New York City\'s best lawyers.',
+ photo: 'https://www.multikurs.pl/uploads_public/cms/component-25162/suits-7591.jpg', tags: ['lawyers', 'comedy', 'suits']}];
 
 @Injectable()
 export class FakeBackendInterceptor implements HttpInterceptor {
@@ -28,6 +31,8 @@ export class FakeBackendInterceptor implements HttpInterceptor {
           return getUsers();
         case url.endsWith('/users') && method === 'POST':
           return createUser();
+        case url.endsWith('/movies') && method === 'GET':
+          return getMovies();
         default:
           // pass through any requests not handled above
           return next.handle(request);
@@ -45,6 +50,11 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         token: 'fake-jwt-token',
         role: user.role
       });
+    }
+
+    function getMovies() {
+      if (!isLoggedIn()) { return unauthorized(); }
+      return ok(movies);
     }
 
     function getUsers() {
