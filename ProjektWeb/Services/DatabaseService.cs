@@ -1,8 +1,13 @@
-﻿using ProjektWeb.Data.Models.Database;
+﻿using Microsoft.EntityFrameworkCore;
+using ProjektWeb.Data.Entities;
+using ProjektWeb.Data.Models.Database;
+using ProjektWeb.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace ProjektWeb.Services
@@ -50,6 +55,27 @@ namespace ProjektWeb.Services
             List<string> tags = new List<string>();
             databaseContext.Elements.ToList().ForEach(x => x.Tags.ToList().ForEach(x => tags.Add(x.Name)));
             return tags.Distinct();
+        }
+
+        public IQueryable<User> AuthenticateUser(string email, string password)
+        {
+            return databaseContext.Users.Where(u => u.NormalizedEmail == email.ToUpper() && u.Password == Security.HashPassword(password));
+        }
+
+        public IQueryable<User> GetUserById(int id)
+        {
+            return databaseContext.Users.Where(u => u.Id == id);
+        }
+        public IQueryable<User> GetUserByEmail(string email)
+        {
+            return databaseContext.Users.Where(u => u.NormalizedEmail == email.ToUpper());
+        }
+
+        public IQueryable<User> AddUser(User user)
+        {
+            databaseContext.Add(user);
+            databaseContext.SaveChanges();
+            return GetUserByEmail(user.Email);
         }
     }
 }

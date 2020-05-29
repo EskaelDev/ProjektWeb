@@ -13,10 +13,13 @@ namespace ProjektWeb.Data.Entities
         [Key]
         public int Id { get; set; }
 
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
+        public string Name { get; set; }
         public string Username { get; set; }
         public UserRoles Role { get; set; }
+
+        public string Email { get; set; }
+
+        public string NormalizedEmail { get; set; }
 
         [JsonIgnore]
         public string Password { get; set; }

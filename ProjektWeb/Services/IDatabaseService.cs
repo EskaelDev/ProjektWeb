@@ -1,4 +1,5 @@
-﻿using ProjektWeb.Data.Models.Database;
+﻿using ProjektWeb.Data.Entities;
+using ProjektWeb.Data.Models.Database;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ProjektWeb.Services
 {
-    interface IDatabaseService
+    public interface IDatabaseService
     {
         List<Element> GetAllElements();
         Element GetElementById(int id);
@@ -17,5 +18,8 @@ namespace ProjektWeb.Services
         IEnumerable<Rate> GetRatesByAuthor(string author);
 
         IEnumerable<string> GetAllTags();
+
+        IQueryable<User> AuthenticateUser(string email, string password);
+        public IQueryable<User> AddUser(User user);
     }
 }
