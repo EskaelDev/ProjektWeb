@@ -11,7 +11,7 @@ namespace ProjektWeb.Data.Models.Database
     {
         [Key]
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
-        public int TagId { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
         public int ElementId { get; set; }
     }
