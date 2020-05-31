@@ -6,16 +6,28 @@ using System.Threading.Tasks;
 
 namespace ProjektWeb.Services
 {
-    interface IDatabaseService
+    public interface IDatabaseService
     {
         List<Element> GetAllElements();
         Element GetElementById(int id);
         Element GetElementByName(string name);
+        IQueryable<Element> GetLazyAllElements();
         IEnumerable<Element> GetElementsContainingTag(string tag);
 
         IEnumerable<Rate> GetAllRates();
         IEnumerable<Rate> GetRatesByAuthor(string author);
 
         IEnumerable<string> GetAllTags();
+
+
+        Task<Element> AddElement(Element element);
+
+        void AddTagToElementById(int elementId, string tag);
+
+
+        IEnumerable<Rate> GetRatesByElementId(int elementId);
+
+        IEnumerable<Tag> GetTagsByElementId(int elementId);
+
     }
 }

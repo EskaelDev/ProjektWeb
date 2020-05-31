@@ -20,21 +20,27 @@ namespace ProjektWeb.Services
         {
             return databaseContext.Elements.ToList();
         }
+        
+        public IQueryable<Element> GetLazyAllElements()
+        {
+            return databaseContext.Elements;
+        }
 
         public Element GetElementById(int id)
         {
-            return databaseContext.Elements.Where(x => x.ElementId == id).FirstOrDefault();
+            return databaseContext.Elements.Where(x => x.Id == id).FirstOrDefault();
         }
 
-        public Element GetElementByName(string name)
+        public Element GetElementByName(string title)
         {
-            return databaseContext.Elements.Where(x => x.Name == name).FirstOrDefault();
+            return databaseContext.Elements.Where(x => x.Title == title).FirstOrDefault();
         }
 
-        public void AddElement(Element element)
+        public Task<Element> AddElement(Element element)
         {
             databaseContext.Elements.Add(element);
             databaseContext.SaveChanges();
+            return databaseContext.Elements.Where(e => e.Id == element.Id).FirstOrDefaultAsync();
         }
 
         public void AddTagToElementById(int elementId, string tag)
@@ -66,7 +72,7 @@ namespace ProjektWeb.Services
         public IEnumerable<Element> GetElementsContainingTag(string tag)
         {
             List<int> elementIds = databaseContext.Tags.Where(x => x.Name == tag).Select(x => x.ElementId).ToList();
-            return databaseContext.Elements.Where(x => elementIds.Contains(x.ElementId)).ToList();
+            return databaseContext.Elements.Where(x => elementIds.Contains(x.Id)).ToList();
         }
 
         public IEnumerable<string> GetAllTags()

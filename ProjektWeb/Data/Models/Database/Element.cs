@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -11,8 +12,14 @@ namespace ProjektWeb.Data.Models.Database
     {
         [Key]
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
-        public int ElementId { get; set; }
+        public int Id { get; set; }
         [Required]
-        public string Name { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
+
+        public string ImagePath { get; set; }
+
+        [ForeignKey("ElementId")]
+        public virtual List<Tag> Tags { get; set; }
     }
 }
