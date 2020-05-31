@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using ProjektWeb.Services;
 using Microsoft.AspNetCore.Http;
+using System.IO;
+using Microsoft.Extensions.FileProviders;
 
 namespace ProjektWeb
 {
@@ -55,10 +57,12 @@ namespace ProjektWeb
 
             // configure DI for application services
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IElementService, ElementService>();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<DatabaseContext, DatabaseContext>();
             services.AddSingleton<DatabaseService, DatabaseService>();
+            services.AddSingleton<IDatabaseService, DatabaseService>();
 
             services.AddControllersWithViews();
             // In production, the Angular files will be served from this directory
@@ -84,6 +88,11 @@ namespace ProjektWeb
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot")),
+                RequestPath = new PathString("/wwwroot")
+            });
             if (!env.IsDevelopment())
             {
                 app.UseSpaStaticFiles();
