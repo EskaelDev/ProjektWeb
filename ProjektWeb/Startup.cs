@@ -56,10 +56,10 @@ namespace ProjektWeb
             // configure DI for application services
             services.AddScoped<IUserAuthService, UserService>();
 
-            services.AddSingleton<IDatabaseService, DatabaseService>();
+            services.AddScoped<IDatabaseService, DatabaseService>();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddSingleton<DatabaseContext, DatabaseContext>();
+            services.AddScoped<DatabaseContext, DatabaseContext>();
 
             services.AddControllersWithViews();
             // In production, the Angular files will be served from this directory
