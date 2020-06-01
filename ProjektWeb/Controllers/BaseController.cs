@@ -12,19 +12,19 @@ namespace ProjektWeb.Controllers
 {
     public class BaseController : ControllerBase
     {
-        protected IUserService UsersService { get; private set; }
+        protected IUserAuthService UsersService { get; private set; }
         protected IHttpContextAccessor HttpContextAccessor { get; private set; }
 
-        public BaseController(IUserService usersService, IHttpContextAccessor httpContextAccessor)
+        public BaseController(IUserAuthService usersService, IHttpContextAccessor httpContextAccessor)
         {
             UsersService = usersService;
             HttpContextAccessor = httpContextAccessor;
         }
 
-        protected async Task<User> GetCurrentUser()
-        {
-            var userId = HttpContextAccessor.HttpContext.User.Identity.Name;
-            return await UsersService.FindById(userId);
-        }
+        //protected async Task<User> GetCurrentUser()
+        //{
+        //    var userId = HttpContextAccessor.HttpContext.User.Identity.Name;
+        //    return await UsersService.FindById(userId);
+        //}
     }
 }

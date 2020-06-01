@@ -54,11 +54,12 @@ namespace ProjektWeb
             });
 
             // configure DI for application services
-            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IUserAuthService, UserService>();
+
+            services.AddScoped<IDatabaseService, DatabaseService>();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddSingleton<DatabaseContext, DatabaseContext>();
-            services.AddSingleton<DatabaseService, DatabaseService>();
+            services.AddScoped<DatabaseContext, DatabaseContext>();
 
             services.AddControllersWithViews();
             // In production, the Angular files will be served from this directory
@@ -82,6 +83,12 @@ namespace ProjektWeb
                 app.UseHsts();
             }
 
+            // global cors policy
+            app.UseCors(x => x
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader());
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             if (!env.IsDevelopment())
@@ -90,12 +97,6 @@ namespace ProjektWeb
             }
 
             app.UseRouting();
-
-            // global cors policy
-            app.UseCors(x => x
-                .AllowAnyOrigin()
-                .AllowAnyMethod()
-                .AllowAnyHeader());
 
             app.UseAuthentication();
             app.UseAuthorization();

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ProjektWeb.Data.Entities;
 using ProjektWeb.Data.Models;
 using ProjektWeb.Services;
 using System;
@@ -17,7 +18,7 @@ namespace ProjektWeb.Controllers
     public class UsersController : BaseController
     {
 
-        public UsersController(IUserService userService, IHttpContextAccessor httpContextAccessor) : base(userService, httpContextAccessor)
+        public UsersController(IUserAuthService userService, IHttpContextAccessor httpContextAccessor) : base(userService, httpContextAccessor)
         {
         }
 
@@ -25,7 +26,7 @@ namespace ProjektWeb.Controllers
         [HttpPost("authenticate")]
         public IActionResult Authenticate([FromBody]AuthenticateModel model)
         {
-            var user = UsersService.Authenticate(model.Username, model.Password);
+            var user = UsersService.Authenticate(model.Email, model.Password);
 
             if (user == null)
                 return BadRequest(new { message = "Username or password is incorrect" });
@@ -33,12 +34,28 @@ namespace ProjektWeb.Controllers
             return Ok(user);
         }
 
-        [HttpGet]
-        public IActionResult GetAll([FromHeader] string Authorization)
+        //[HttpGet]
+        //public IActionResult GetAll([FromHeader] string Authorization)
+        //{
+        //    var users = UsersService.GetAll();
+        //    var user = GetCurrentUser();
+        //    return Ok(users);
+        //}
+
+        [AllowAnonymous]
+        [HttpPost("register")]
+        public IActionResult Register([FromBody]RegisterModel model)
         {
-            var users = UsersService.GetAll();
-            var user = GetCurrentUser();
-            return Ok(users);
+            var user = new User { 
+                Name = model.Name,
+                Email = model.Email,
+                NormalizedEmail = model.Email.ToUpper(),
+                Password = model.Password
+            };
+
+            UsersService.Register(user);
+
+            return Ok(user);
         }
     }
 }
