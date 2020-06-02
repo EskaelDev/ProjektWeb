@@ -1,4 +1,5 @@
-﻿using ProjektWeb.Data.Models.Database;
+﻿using ProjektWeb.Data.Entities;
+using ProjektWeb.Data.Models.Database;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,5 +30,7 @@ namespace ProjektWeb.Services
 
         IEnumerable<Tag> GetTagsByElementId(int elementId);
 
+        IQueryable<User> AuthenticateUser(string email, string password);
+        public IQueryable<User> AddUser(User user);
     }
 }

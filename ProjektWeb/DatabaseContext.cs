@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using ProjektWeb.Data.Entities;
 using ProjektWeb.Data.Models.Database;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,7 @@ namespace ProjektWeb
 
         public DbSet<Element> Elements { get; set; }
         public DbSet<Rate> Rates { get; set; }
+        public DbSet<User> Users{ get; set; }
         public DbSet<Tag> Tags { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)

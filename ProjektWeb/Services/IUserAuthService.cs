@@ -7,11 +7,10 @@ using System.Threading.Tasks;
 
 namespace ProjektWeb.Services
 {
-    public interface IUserService
+    public interface IUserAuthService
     {
-        User Authenticate(string username, string password);
-        IEnumerable<User> GetAll();
-        Task<User> FindById(string userId);
-
+        Task<User> Authenticate(string username, string password);
+        Task<User> Register(User newUser);
+        
     }
 }
