@@ -31,6 +31,10 @@ namespace ProjektWeb.Services
         IEnumerable<Tag> GetTagsByElementId(int elementId);
 
         IQueryable<User> AuthenticateUser(string email, string password);
-        public IQueryable<User> AddUser(User user);
+        IQueryable<User> AddUser(User user);
+
+        IQueryable<User> GetUserById(int id);
+
+        IQueryable<User> GetUserByEmail(string email);
     }
 }

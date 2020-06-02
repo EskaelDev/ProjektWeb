@@ -25,6 +25,9 @@ namespace ProjektWeb.Data.Entities
         public string Password { get; set; }
 
         public string Token { get; set; }
+
+        [JsonIgnore]
+        public byte[] Salt { get; set; }
     }
 
     public enum UserRoles

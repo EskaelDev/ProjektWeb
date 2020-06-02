@@ -18,7 +18,7 @@ namespace ProjektWeb.Controllers
     public class UsersController : BaseController
     {
 
-        public UsersController(IUserAuthService userService, IHttpContextAccessor httpContextAccessor) : base(userService, httpContextAccessor)
+        public UsersController(IUserService userService, IHttpContextAccessor httpContextAccessor) : base(userService, httpContextAccessor)
         {
         }
 

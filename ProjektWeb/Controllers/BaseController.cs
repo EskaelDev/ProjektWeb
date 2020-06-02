@@ -10,21 +10,21 @@ using System.Threading.Tasks;
 
 namespace ProjektWeb.Controllers
 {
-    public class BaseController : ControllerBase
+    public abstract class BaseController : ControllerBase
     {
-        protected IUserAuthService UsersService { get; private set; }
+        protected IUserService UsersService { get; private set; }
         protected IHttpContextAccessor HttpContextAccessor { get; private set; }
 
-        public BaseController(IUserAuthService usersService, IHttpContextAccessor httpContextAccessor)
+        public BaseController(IUserService usersService, IHttpContextAccessor httpContextAccessor)
         {
             UsersService = usersService;
             HttpContextAccessor = httpContextAccessor;
         }
 
-        //protected async Task<User> GetCurrentUser()
-        //{
-        //    var userId = HttpContextAccessor.HttpContext.User.Identity.Name;
-        //    return await UsersService.FindById(userId);
-        //}
+        protected async Task<User> GetCurrentUser()
+        {
+            var userId = int.Parse(HttpContextAccessor.HttpContext.User.Claims.Where(c => c.Type == System.Security.Claims.ClaimTypes.NameIdentifier).FirstOrDefault().Value);
+            return await UsersService.GetById(userId);
+        }
     }
 }

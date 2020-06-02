@@ -56,7 +56,7 @@ namespace ProjektWeb
             });
 
             // configure DI for application services
-            services.AddScoped<IUserAuthService, UserService>();
+            services.AddScoped<IUserService, UserService>();
             services.AddScoped<IElementService, ElementService>();
 
             services.AddScoped<IDatabaseService, DatabaseService>();

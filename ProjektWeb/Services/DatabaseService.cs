@@ -88,7 +88,8 @@ namespace ProjektWeb.Services
 
         public IQueryable<User> AuthenticateUser(string email, string password)
         {
-            return databaseContext.Users.Where(u => u.NormalizedEmail == email.ToUpper() && u.Password == Security.HashPassword(password));
+            User user = databaseContext.Users.Where(u => u.NormalizedEmail == email.ToUpper()).FirstOrDefault();
+            return databaseContext.Users.Where(u => u.NormalizedEmail == email.ToUpper() && u.Password == Security.HashPassword(password, u.Salt));
         }
 
         public IQueryable<User> GetUserById(int id)
@@ -106,5 +107,6 @@ namespace ProjektWeb.Services
             databaseContext.SaveChanges();
             return GetUserByEmail(user.Email);
         }
+
     }
 }
