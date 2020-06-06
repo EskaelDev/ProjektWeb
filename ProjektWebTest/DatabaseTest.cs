@@ -29,7 +29,7 @@ namespace ProjektWebTest
                 var employee = databaseService.GetAllElements().First();
                 Assert.Equal("TestName", employee.Title);
 
-                var employee2 = databaseService.GetElementById(11);
+                var employee2 = databaseService.GetElementById(11).FirstOrDefault();
                 Assert.Equal("TestName", employee2.Title);
 
                 var employee3 = databaseService.GetElementByName("TestName");
