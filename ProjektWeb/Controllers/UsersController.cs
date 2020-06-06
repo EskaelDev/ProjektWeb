@@ -24,9 +24,9 @@ namespace ProjektWeb.Controllers
 
         [AllowAnonymous]
         [HttpPost("authenticate")]
-        public IActionResult Authenticate([FromBody]AuthenticateModel model)
+        public async Task<ActionResult<User>> Authenticate([FromBody]AuthenticateViewModel model)
         {
-            var user = UsersService.Authenticate(model.Email, model.Password);
+            var user = await _usersService.Authenticate(model.Email, model.Password);
 
             if (user == null)
                 return BadRequest(new { message = "Username or password is incorrect" });
@@ -44,7 +44,7 @@ namespace ProjektWeb.Controllers
 
         [AllowAnonymous]
         [HttpPost("register")]
-        public IActionResult Register([FromBody]RegisterModel model)
+        public async Task<ActionResult<User>> Register([FromBody]RegisterModel model)
         {
             var user = new User { 
                 Name = model.Name,
@@ -53,7 +53,7 @@ namespace ProjektWeb.Controllers
                 Password = model.Password
             };
 
-            UsersService.Register(user);
+            await _usersService.Register(user);
 
             return Ok(user);
         }

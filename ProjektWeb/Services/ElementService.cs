@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ProjektWeb.Controllers;
 using ProjektWeb.Data.Models.Database;
 using System;
 using System.Collections.Generic;
@@ -17,17 +18,31 @@ namespace ProjektWeb.Services
             _databaseService = databaseService;
         }
 
-        public Task<List<Element>> GetElements(int? pageNumber)
+        public Task<List<Element>> GetMany(int? pageNumber)
         {
             return _databaseService.GetLazyAllElements().Skip(pageNumber.GetValueOrDefault(1) * PageSize).Take(PageSize).ToListAsync();
         }
 
 
-        public Task<Element> SaveElement(Element newElement)
+        public Task<Element> Create(ElementViewModel newElement)
         {
-            return _databaseService.AddElement(newElement);
+            var element = new Element { Title = newElement.Title };
+            return _databaseService.AddElement(element);
         }
 
+        public async Task<Element> Get(int id)
+        {
+            return await _databaseService.GetElementById(id).FirstOrDefaultAsync();
+        }
 
+        public async Task<bool> Delete(int id)
+        {
+            return await _databaseService.DeleteElementById(id);
+        }
+        public async Task<Element> Update(ElementViewModel newElement)
+        {
+            var element = new Element { Title = newElement.Title };
+            return await _databaseService.UpdateElement(element).FirstOrDefaultAsync();
+        }
     }
 }

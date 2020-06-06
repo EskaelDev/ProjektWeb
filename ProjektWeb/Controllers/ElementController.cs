@@ -23,28 +23,68 @@ namespace ProjektWeb.Controllers
 
         [AllowAnonymous]
         [HttpGet("all/{page}")]
-        public async Task<ActionResult<List<Element>>> GetAllElements(int? page)
+        public async Task<ActionResult<List<Element>>> GetAll(int? page)
         {
-            var result = await _elementService.GetElements(page);
-            if (result.Count > 0)
-                return Ok(result);
-            else
+            var result = await _elementService.GetMany(page);
+            if (result.Count <= 0)
                 return NoContent();
+            else
+                return Ok(result);
         }
 
 
         [HttpPost("save")]
-        public async Task<ActionResult<Element>> SaveElement([FromBody] ElementViewModel newElement)
+        public async Task<ActionResult<Element>> Post([FromBody] ElementViewModel newElement)
         {
-            if (GetCurrentUser().Result.Role != Data.Entities.UserRoles.admin)
+            if (!_usersService.IsAdmin())
                 return Unauthorized();
 
-            var element = new Element { Title = newElement.Title};
-            var result = await _elementService.SaveElement(element);
+            var result = await _elementService.Create(newElement);
 
             return Ok(result);
-                        
         }
 
+        [HttpGet("/{id}")]
+        public async Task<ActionResult<List<Element>>> Get(int? id)
+        {
+            if (id.HasValue)
+            {
+                var result = await _elementService.Get(id.Value);
+                if (result == null)
+                    return Ok(result);
+            }
+            return NoContent();
+        }
+
+        [HttpDelete("/{id}")]
+        public async Task<ActionResult> Delete(int? id)
+        {
+            if (!_usersService.IsAdmin())
+                return Unauthorized();
+
+            if (id.HasValue)
+            {
+                var result = await _elementService.Delete(id.Value);
+                if (result)
+                    return Ok();
+            }
+
+            return NoContent();
+        }
+
+        [HttpPut("/{id}")]
+        public async Task<ActionResult<List<Element>>> Put(ElementViewModel updatedElement)
+        {
+            if (!_usersService.IsAdmin())
+                return Unauthorized();
+
+            if (updatedElement != null)
+            {
+                var result = await _elementService.Update(updatedElement);
+                return Ok(result);
+            }
+
+            return NoContent();
+        }
     }
 }

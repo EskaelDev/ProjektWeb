@@ -10,7 +10,7 @@ namespace ProjektWeb.Services
     public interface IDatabaseService
     {
         List<Element> GetAllElements();
-        Element GetElementById(int id);
+        IQueryable<Element> GetElementById(int id);
         Element GetElementByName(string name);
         IQueryable<Element> GetLazyAllElements();
         IEnumerable<Element> GetElementsContainingTag(string tag);
@@ -36,5 +36,10 @@ namespace ProjektWeb.Services
         IQueryable<User> GetUserById(int id);
 
         IQueryable<User> GetUserByEmail(string email);
+
+        Task<bool> DeleteElementById(int id);
+
+        IQueryable<Element> UpdateElement(Element element);
+
     }
 }
