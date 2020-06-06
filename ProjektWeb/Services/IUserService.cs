@@ -13,5 +13,7 @@ namespace ProjektWeb.Services
         Task<User> Register(User newUser);
 
         Task<User> GetById(int id);
+
+        bool IsAdmin();
     }
 }

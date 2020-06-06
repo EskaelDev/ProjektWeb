@@ -13,6 +13,7 @@ using ProjektWeb.Helpers;
 using System.Linq.Expressions;
 using System.Security.Cryptography;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
 
 namespace ProjektWeb.Services
 {
@@ -22,11 +23,13 @@ namespace ProjektWeb.Services
 
         private readonly AppSettings _appSettings;
         private IDatabaseService _databaseService;
+        private IHttpContextAccessor _httpContextAccessor { get;  set; }
 
-        public UserService(IOptions<AppSettings> appSettings, IDatabaseService context)
+        public UserService(IOptions<AppSettings> appSettings, IDatabaseService context, IHttpContextAccessor httpContextAccessor)
         {
             _appSettings = appSettings.Value;
             _databaseService = context;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<User> Authenticate(string email, string password)
@@ -37,9 +40,8 @@ namespace ProjektWeb.Services
                 return null;
 
     
-            string typedPassword = Security.HashPassword(password, user.Salt);
-            string userPassword = Security.HashPassword(user.Password, user.Salt);
-            if (typedPassword != userPassword)
+            string hashedPassword = Security.HashPassword(password, user.Salt);
+            if (hashedPassword != user.Password)
                 return null;
 
             user.Token = Security.CreateUserToken(user, _appSettings);
@@ -58,6 +60,17 @@ namespace ProjektWeb.Services
             newUser.Password = Security.HashPassword(newUser.Password, newUser.Salt);
             newUser.Role = UserRoles.user;
             return await _databaseService.AddUser(newUser).FirstOrDefaultAsync();
+        }
+
+        public bool IsAdmin()
+        {
+            return (GetCurrentUser().Result.Role != Data.Entities.UserRoles.admin);
+        }
+
+        protected async Task<User> GetCurrentUser()
+        {
+            var userId = int.Parse(_httpContextAccessor.HttpContext.User.Claims.Where(c => c.Type == System.Security.Claims.ClaimTypes.NameIdentifier).FirstOrDefault().Value);
+            return await GetById(userId);
         }
 
     }
