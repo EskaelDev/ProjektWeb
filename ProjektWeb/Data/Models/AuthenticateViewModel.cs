@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ProjektWeb.Data.Models
 {
-    public class AuthenticateModel
+    public class AuthenticateViewModel
     {
 
         [Required]

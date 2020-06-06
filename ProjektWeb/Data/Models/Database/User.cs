@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Text.Json.Serialization;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel;
 
 namespace ProjektWeb.Data.Entities
 {
@@ -25,6 +26,9 @@ namespace ProjektWeb.Data.Entities
         public string Password { get; set; }
 
         public string Token { get; set; }
+        [Required]
+        [DefaultValue(true)]
+        public bool IsDeleted { get; set; }
 
         [JsonIgnore]
         public byte[] Salt { get; set; }

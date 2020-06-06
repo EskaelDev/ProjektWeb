@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -17,6 +18,10 @@ namespace ProjektWeb.Data.Models.Database
         [Required]
         public int Score { get; set; }
         public string Comment { get; set; }
+        [Required]
+        [DefaultValue(true)]
+        public bool IsDeleted { get; set; }
+
         public int ElementId { get; set; }
     }
 }
