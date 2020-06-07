@@ -16,7 +16,7 @@ namespace ProjektWebTest
         [Fact(DisplayName = "Test1 successful")]
         public void Test1()
         {
-            var options = PrepareDatabase();
+            var options = DatabaseMock.PrepareDatabase();
             using (var context = new DatabaseContext(options))
             {
                 var databaseService = new DatabaseService(context);
@@ -40,7 +40,7 @@ namespace ProjektWebTest
         [Fact(DisplayName = "Test2 successful")]
         public void Test2()
         {
-            var options = PrepareDatabase();
+            var options = DatabaseMock.PrepareDatabase();
             using (var context = new DatabaseContext(options))
             {
                 var databaseService = new DatabaseService(context);
@@ -66,20 +66,6 @@ namespace ProjektWebTest
             }
         }
 
-        private DbContextOptions<DatabaseContext> PrepareDatabase()
-        {
-            var connection = new SqliteConnection("DataSource=:memory:");
-            connection.Open();
-
-            var options = new DbContextOptionsBuilder<DatabaseContext>().UseSqlite(connection).Options;
-
-            using (var context = new DatabaseContext(options))
-            {
-                context.Database.EnsureCreated();
-            }
-
-            return options;
-        }
     }
 
 

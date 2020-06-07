@@ -32,9 +32,9 @@ namespace ProjektWeb.Services
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<User> Authenticate(string email, string password)
+        public async Task<User> Authenticate(string normalizedEmail, string password)
         {
-            var user = await _databaseService.GetUserByEmail(email).FirstOrDefaultAsync();
+            var user = await _databaseService.GetUserByEmail(normalizedEmail).FirstOrDefaultAsync();
 
             if (user == null)
                 return null;
@@ -57,6 +57,7 @@ namespace ProjektWeb.Services
         public async Task<User> Register(User newUser)
         {
             newUser.Salt = Security.CreateSalt();
+            newUser.NormalizedEmail = newUser.Email.ToUpper();
             newUser.Password = Security.HashPassword(newUser.Password, newUser.Salt);
             newUser.Role = UserRoles.user;
             return await _databaseService.AddUser(newUser).FirstOrDefaultAsync();

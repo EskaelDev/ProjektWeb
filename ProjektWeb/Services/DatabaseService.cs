@@ -99,14 +99,14 @@ namespace ProjektWeb.Services
         }
         public IQueryable<User> GetUserByEmail(string email)
         {
-            return databaseContext.Users.Where(u => u.NormalizedEmail == email.ToUpper() && !u.IsDeleted);
+            return databaseContext.Users.Where(u => u.NormalizedEmail == email && !u.IsDeleted);
         }
 
         public IQueryable<User> AddUser(User user)
         {
             databaseContext.Add(user);
             databaseContext.SaveChanges();
-            return GetUserByEmail(user.Email);
+            return GetUserByEmail(user.NormalizedEmail);
         }
 
         public async Task<bool> DeleteElementById(int id)
