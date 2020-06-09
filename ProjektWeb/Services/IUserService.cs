@@ -7,10 +7,13 @@ using System.Threading.Tasks;
 
 namespace ProjektWeb.Services
 {
-    public interface IUserAuthService
+    public interface IUserService
     {
-        Task<User> Authenticate(string username, string password);
+        Task<User> Authenticate(string normalizedEmail, string password);
         Task<User> Register(User newUser);
-        
+
+        Task<User> GetById(int id);
+
+        bool IsAdmin();
     }
 }

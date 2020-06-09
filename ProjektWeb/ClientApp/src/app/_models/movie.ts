@@ -1,6 +1,6 @@
 export class Movie {
   title: string;
   description: string;
-  photo: string;
+  imagePath: string;
   tags: string[];
 }

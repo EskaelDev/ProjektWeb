@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -11,8 +12,11 @@ namespace ProjektWeb.Data.Models.Database
     {
         [Key]
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
-        public int TagId { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
         public int ElementId { get; set; }
+        [Required]
+        [DefaultValue(true)]
+        public bool IsDeleted { get; set; }
     }
 }

@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using ProjektWeb.Services;
 using Microsoft.AspNetCore.Http;
+using System.IO;
+using Microsoft.Extensions.FileProviders;
 
 namespace ProjektWeb
 {
@@ -54,7 +56,8 @@ namespace ProjektWeb
             });
 
             // configure DI for application services
-            services.AddScoped<IUserAuthService, UserService>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IElementService, ElementService>();
 
             services.AddScoped<IDatabaseService, DatabaseService>();
 
@@ -91,6 +94,11 @@ namespace ProjektWeb
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot")),
+                RequestPath = new PathString("/wwwroot")
+            });
             if (!env.IsDevelopment())
             {
                 app.UseSpaStaticFiles();

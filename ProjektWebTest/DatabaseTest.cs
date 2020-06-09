@@ -16,41 +16,41 @@ namespace ProjektWebTest
         [Fact(DisplayName = "Test1 successful")]
         public void Test1()
         {
-            var options = PrepareDatabase();
+            var options = DatabaseMock.PrepareDatabase();
             using (var context = new DatabaseContext(options))
             {
                 var databaseService = new DatabaseService(context);
-                databaseService.AddElement(new Element{ ElementId = 11, Name = "TestName" });
+                databaseService.AddElement(new Element { Id = 11, Title = "TestName" });
             }
 
             using (var context = new DatabaseContext(options))
             {
                 var databaseService = new DatabaseService(context);
                 var employee = databaseService.GetAllElements().First();
-                Assert.Equal("TestName", employee.Name);
+                Assert.Equal("TestName", employee.Title);
 
-                var employee2 = databaseService.GetElementById(11);
-                Assert.Equal("TestName", employee2.Name);
+                var employee2 = databaseService.GetElementById(11).FirstOrDefault();
+                Assert.Equal("TestName", employee2.Title);
 
                 var employee3 = databaseService.GetElementByName("TestName");
-                Assert.Equal(11, employee3.ElementId);
+                Assert.Equal(11, employee3.Id);
             }
         }
 
         [Fact(DisplayName = "Test2 successful")]
         public void Test2()
         {
-            var options = PrepareDatabase();
+            var options = DatabaseMock.PrepareDatabase();
             using (var context = new DatabaseContext(options))
             {
                 var databaseService = new DatabaseService(context);
-                databaseService.AddElement(new Element { ElementId = 11, Name = "TestName"});
+                databaseService.AddElement(new Element { Id = 11, Title = "TestName" });
                 databaseService.AddTagToElementById(11, "test1");
                 databaseService.AddTagToElementById(11, "test2");
-                databaseService.AddElement(new Element { ElementId = 12, Name = "TestName2"});
+                databaseService.AddElement(new Element { Id = 12, Title = "TestName2" });
                 databaseService.AddTagToElementById(12, "test3");
                 databaseService.AddTagToElementById(12, "test4");
-                databaseService.AddElement(new Element { ElementId = 13, Name = "TestName3" });
+                databaseService.AddElement(new Element { Id = 13, Title = "TestName3" });
                 databaseService.AddTagToElementById(13, "test1");
             }
 
@@ -66,20 +66,6 @@ namespace ProjektWebTest
             }
         }
 
-        private DbContextOptions<DatabaseContext> PrepareDatabase()
-        {
-            var connection = new SqliteConnection("DataSource=:memory:");
-            connection.Open();
-
-            var options = new DbContextOptionsBuilder<DatabaseContext>().UseSqlite(connection).Options;
-
-            using (var context = new DatabaseContext(options))
-            {
-                context.Database.EnsureCreated();
-            }
-
-            return options;
-        }
     }
 
 
