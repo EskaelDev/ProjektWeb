@@ -26,7 +26,7 @@ namespace ProjektWeb.Controllers
         [HttpPost("authenticate")]
         public async Task<ActionResult<User>> Authenticate([FromBody]AuthenticateViewModel model)
         {
-            var user = await _usersService.Authenticate(model.Email, model.Password);
+            var user = await _usersService.Authenticate(model.Email.ToUpper(), model.Password);
 
             if (user == null)
                 return BadRequest(new { message = "Username or password is incorrect" });

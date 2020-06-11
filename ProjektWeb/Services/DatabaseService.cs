@@ -97,16 +97,21 @@ namespace ProjektWeb.Services
         {
             return databaseContext.Users.Where(u => u.Id == id && !u.IsDeleted);
         }
-        public IQueryable<User> GetUserByEmail(string email)
+        public IQueryable<User> GetUserByEmail(string normalizedEmail)
         {
-            return databaseContext.Users.Where(u => u.NormalizedEmail == email && !u.IsDeleted);
+            return databaseContext.Users.Where(u => u.NormalizedEmail == normalizedEmail && !u.IsDeleted);
         }
 
         public IQueryable<User> AddUser(User user)
         {
-            databaseContext.Add(user);
-            databaseContext.SaveChanges();
-            return GetUserByEmail(user.NormalizedEmail);
+            if (GetUserByEmail(user.NormalizedEmail).FirstOrDefault() == null)
+            {
+                databaseContext.Add(user);
+                databaseContext.SaveChanges();
+                return GetUserByEmail(user.NormalizedEmail);
+            }
+            else
+                throw new Exception("User exits");
         }
 
         public async Task<bool> DeleteElementById(int id)
