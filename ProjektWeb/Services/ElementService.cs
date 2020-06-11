@@ -20,7 +20,7 @@ namespace ProjektWeb.Services
 
         public Task<List<Element>> GetMany(int? pageNumber)
         {
-            return _databaseService.GetLazyAllElements().Skip(pageNumber.GetValueOrDefault(1) * PageSize).Take(PageSize).ToListAsync();
+            return _databaseService.GetLazyAllElements().Skip(pageNumber.GetValueOrDefault(0) * PageSize).Take(PageSize).ToListAsync();
         }
 
 

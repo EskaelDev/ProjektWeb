@@ -10,21 +10,25 @@ using System.Threading.Tasks;
 
 namespace ProjektWeb.Controllers
 {
-    [Authorize]
+    [Authorize(AuthenticationSchemes = "Bearer")]
     [ApiController]
     [Route("[controller]")]
     public class ElementController : BaseController
     {
         private IElementService _elementService;
-        public ElementController(IUserService userService, IHttpContextAccessor httpContextAccessor, IElementService elementService) : base(userService, httpContextAccessor)
+        private IImageTransferService _imageService;
+        public ElementController(IUserService userService, IHttpContextAccessor httpContextAccessor, IElementService elementService, IImageTransferService imageTransferService) : base(userService, httpContextAccessor)
         {
             _elementService = elementService;
+            _imageService = imageTransferService;
         }
 
         [AllowAnonymous]
         [HttpGet("all/{page}")]
         public async Task<ActionResult<List<Element>>> GetAll(int? page)
         {
+            if (page == null)
+                page = 1;
             var result = await _elementService.GetMany(page);
             if (result.Count <= 0)
                 return NoContent();
@@ -85,6 +89,12 @@ namespace ProjektWeb.Controllers
             }
 
             return NoContent();
+        }
+
+        [HttpPost]
+        public async Task UploadFile()
+        {
+            await _imageService.SaveFile(HttpContext.Request.Form);
         }
     }
 }
