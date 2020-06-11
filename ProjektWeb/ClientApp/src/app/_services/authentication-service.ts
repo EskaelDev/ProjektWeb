@@ -19,7 +19,7 @@ export class AuthenticationService {
     return this.currentUserSubject.value;
   }
 
-  login(email: string, password: string) :Observable<any>{
+  login(email: string, password: string): Observable<any> {
     return this.http.post<any>(`${environment.apiUrl}/users/authenticate`, { email, password })
       .pipe(map(user => {
         // store user details and jwt token in local storage to keep user logged in between page refreshes

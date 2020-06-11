@@ -79,7 +79,7 @@ export class LoginComponent implements OnInit {
         error => {
           this.openDialog(error);
           this.loading = false;
-          console.log(error);          
+          console.log(error);
         });
   }
 
