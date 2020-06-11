@@ -92,7 +92,7 @@ export class LoginComponent implements OnInit {
     };
     this.userService.create(user)
       .subscribe(
-        data => this.loginAlreadyCreatedUser(data),
+        data => this.openDialog(`You can login using ${data.email} email`),
         error => {
           this.openDialog(error);
           this.loading = false;

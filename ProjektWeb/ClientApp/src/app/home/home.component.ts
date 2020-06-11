@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {Movie} from '../_models/movie';
-import {MovieService} from '../_services/movie-service';
-import {DialogComponent} from '../dialog/dialog.component';
-import {MatDialog} from '@angular/material';
+import { Movie } from '../_models/movie';
+import { MovieService } from '../_services/movie-service';
+import { DialogComponent } from '../dialog/dialog.component';
+import { MatDialog } from '@angular/material';
 
 @Component({
   selector: 'app-home',
@@ -13,14 +13,13 @@ export class HomeComponent implements OnInit {
   movies: Movie[];
 
   constructor(private movieService: MovieService, private dialog: MatDialog) {
-    movieService.getAll().subscribe(
+    this.movies = new Array<Movie>();
+    movieService.getAll(0).subscribe(
       data => {
-        this.movies = data;
-        if (this.movies.length !== 0) {
-          const mov = this.movies[0];
-          for (let i = 0; i < 10; i++) {
-            this.movies.push(mov);
-          }
+        if (data.length > 0) {
+          data.forEach(element => {
+            this.movies.push(element);
+          });
         }
       },
       error => this.openDialog(error)
@@ -34,7 +33,7 @@ export class HomeComponent implements OnInit {
     this.dialog.open(DialogComponent, {
       width: '30%',
       minHeight: '200px',
-      data: {title: 'Error', content: error}
+      data: { title: 'Error', content: error }
     });
   }
 }

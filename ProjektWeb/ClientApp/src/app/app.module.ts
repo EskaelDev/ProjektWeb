@@ -3,11 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
-
 import { AppComponent } from './app.component';
-import { NavMenuComponent } from './nav-menu/nav-menu.component';
-import { CounterComponent } from './counter/counter.component';
-import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatButtonModule, MatChipsModule, MatDialogModule, MatGridListModule} from '@angular/material';
 import { MainNavComponent } from './main-nav/main-nav.component';
@@ -33,9 +29,6 @@ import { MoviePanelComponent } from './home/movie-panel/movie-panel.component';
 @NgModule({
   declarations: [
     AppComponent,
-    NavMenuComponent,
-    CounterComponent,
-    FetchDataComponent,
     MainNavComponent,
     LoginComponent,
     DialogComponent,
@@ -50,7 +43,6 @@ import { MoviePanelComponent } from './home/movie-panel/movie-panel.component';
     RouterModule.forRoot([
       { path: '', component: HomeComponent, canActivate: [AuthGuard] },
       { path: 'login', component: LoginComponent, pathMatch: 'full' },
-      { path: 'counter', component: CounterComponent, canActivate: [AuthGuard] },
       { path: 'admin-panel', component: AdminPanelComponent, canActivate: [AuthGuard], data: {roles: [Role.Admin]} },
 
       // otherwise redirect to home
