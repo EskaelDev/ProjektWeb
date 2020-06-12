@@ -4,7 +4,8 @@
   <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia">
 </mat-form-field>
   <div class="float-right delete-button">
-    <button mat-raised-button color="warn" (click)="onDeleteClicked()" [disabled]="noMovieSelected()">Delete<mat-icon>delete</mat-icon></button>
+    <button mat-raised-button color="accent" routerLink="/add">Create<mat-icon>add</mat-icon></button>
+    <button mat-raised-button color="warn" (click)="onDeleteClicked()" class="button-margin" [disabled]="noMovieSelected()">Delete<mat-icon>delete</mat-icon></button>
   </div>
 </div>
 <div class="example-container mat-elevation-z8">

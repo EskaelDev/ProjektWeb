@@ -58,3 +58,7 @@ table {
 .delete-button {
   padding-top: 3%;
 }
+
+.button-margin {
+  margin-left: 5px;
+}

@@ -110,7 +110,6 @@ export class AdminPanelComponent implements AfterViewInit  {
   }
 
   onEditClicked(row?: Movie) {
-
   }
 
   openDialog(errorMsg: string) {

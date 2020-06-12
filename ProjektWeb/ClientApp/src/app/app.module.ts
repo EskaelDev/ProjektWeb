@@ -5,7 +5,15 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {MatButtonModule, MatCheckboxModule, MatChipsModule, MatDialogModule, MatGridListModule, MatTableModule} from '@angular/material';
+import {
+  MatAutocompleteModule,
+  MatButtonModule,
+  MatCheckboxModule,
+  MatChipsModule,
+  MatDialogModule,
+  MatGridListModule,
+  MatTableModule
+} from '@angular/material';
 import { MainNavComponent } from './main-nav/main-nav.component';
 import { LayoutModule } from '@angular/cdk/layout';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -25,6 +33,7 @@ import {Role} from './_models/role';
 import { HomeComponent } from './home/home.component';
 import { MoviePanelComponent } from './home/movie-panel/movie-panel.component';
 import { MatPaginatorModule, MatSortModule, MatProgressSpinnerModule} from '@angular/material';
+import { AddMovieComponent } from './admin-panel/add-movie/add-movie.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +44,7 @@ import { MatPaginatorModule, MatSortModule, MatProgressSpinnerModule} from '@ang
     AdminPanelComponent,
     HomeComponent,
     MoviePanelComponent,
+    AddMovieComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -44,6 +54,7 @@ import { MatPaginatorModule, MatSortModule, MatProgressSpinnerModule} from '@ang
       { path: '', component: HomeComponent, canActivate: [AuthGuard] },
       { path: 'login', component: LoginComponent, pathMatch: 'full' },
       { path: 'admin', component: AdminPanelComponent, canActivate: [AuthGuard], data: {roles: [Role.Admin]} },
+      { path: 'add', component: AddMovieComponent, canActivate: [AuthGuard], data: {roles: [Role.Admin]} },
       { path: 'home', redirectTo: '' },
 
       // otherwise redirect to home
@@ -66,7 +77,8 @@ import { MatPaginatorModule, MatSortModule, MatProgressSpinnerModule} from '@ang
     MatSortModule,
     MatProgressSpinnerModule,
     MatTableModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatAutocompleteModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
