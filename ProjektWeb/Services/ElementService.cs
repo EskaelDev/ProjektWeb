@@ -24,33 +24,10 @@ namespace ProjektWeb.Services
         }
 
 
-        public async Task<Element> Create(ElementViewModel newElement)
+        public Task<Element> Create(ElementViewModel newElement)
         {
-            var element = new Element { Title = newElement.Title , Description = newElement.Description};
-            // wyszukanie tagów
-            var dbTags = _databaseService.GetAllTags().ToList();
-
-            Dictionary<Tag, int> tagsToAdd = new Dictionary<Tag, int>();
-            newElement.Tags.ForEach(tag =>
-            {
-                var exist = false;
-                dbTags.ForEach(dbTag =>
-                    {
-                        exist = exist || (dbTag.Name == tag);
-                        tagsToAdd.Add(dbTag, 0);
-                    });
-                if (!exist)
-                    tagsToAdd.Add(new Tag { Name = tag }, 1);
-            });
-
-            foreach (KeyValuePair<Tag, int> tag in tagsToAdd)
-            {
-                if (tag.Value == 1)
-                    await _databaseService.AddTag(tag.Key);
-                element.Tags.Add(tag.Key);
-            }
-                        
-            return await _databaseService.AddElement(element);
+            var element = new Element { Title = newElement.Title };
+            return _databaseService.AddElement(element);
         }
 
         public async Task<Element> Get(int id)

@@ -8,7 +8,7 @@ namespace ProjektWeb.Services
 {
     public interface IImageTransferService
     {
-        public Task<string> SaveFile(IFormCollection httpRequest);
+        public Task<bool> SaveFile(IFormCollection httpRequest);
 
     }
 }

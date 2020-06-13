@@ -42,7 +42,7 @@ namespace ProjektWeb.Controllers
         {
             if (!_usersService.IsAdmin())
                 return Unauthorized();
-            newElement.Path = await _imageService.SaveFile(HttpContext.Request.Form);
+
             var result = await _elementService.Create(newElement);
 
             return Ok(result);
