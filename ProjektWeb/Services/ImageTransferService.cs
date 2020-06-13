@@ -37,7 +37,7 @@ namespace ProjektWeb.Services
         {
             try
             {
-                string path = Path.Combine(DirPath, file.FileName);
+                string path = Path.Combine(DirPath, file.FileName + ".png");
                 using (var fileStream = new FileStream(path, FileMode.Create))
                 {
                     await file.CopyToAsync(fileStream);
