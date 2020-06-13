@@ -29,6 +29,6 @@ export class MovieService {
   }
 
   saveFile(data: FormData) {
-    return this.http.post<string>(`${this.controllerUrl}/UploadFile`, data);
+    return this.http.post<string>(`${this.controllerUrl}uploadfile`, data);
   }
 }
