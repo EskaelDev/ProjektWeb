@@ -91,7 +91,7 @@ namespace ProjektWeb.Controllers
             return NoContent();
         }
 
-        [HttpPost]
+        [HttpPost("uploadfile")]
         public async Task<string> UploadFile()
         {
             return await _imageService.SaveFile(HttpContext.Request.Form);
