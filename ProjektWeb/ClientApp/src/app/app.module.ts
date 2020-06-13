@@ -33,7 +33,7 @@ import {Role} from './_models/role';
 import { HomeComponent } from './home/home.component';
 import { MoviePanelComponent } from './home/movie-panel/movie-panel.component';
 import { MatPaginatorModule, MatSortModule, MatProgressSpinnerModule} from '@angular/material';
-import { AddMovieComponent } from './admin-panel/add-movie/add-movie.component';
+import { MovieComponent } from './admin-panel/movie/movie.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +44,7 @@ import { AddMovieComponent } from './admin-panel/add-movie/add-movie.component';
     AdminPanelComponent,
     HomeComponent,
     MoviePanelComponent,
-    AddMovieComponent,
+    MovieComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -54,7 +54,7 @@ import { AddMovieComponent } from './admin-panel/add-movie/add-movie.component';
       { path: '', component: HomeComponent, canActivate: [AuthGuard] },
       { path: 'login', component: LoginComponent, pathMatch: 'full' },
       { path: 'admin', component: AdminPanelComponent, canActivate: [AuthGuard], data: {roles: [Role.Admin]} },
-      { path: 'add', component: AddMovieComponent, canActivate: [AuthGuard], data: {roles: [Role.Admin]} },
+      { path: 'movie', component: MovieComponent, canActivate: [AuthGuard], data: {roles: [Role.Admin]} },
       { path: 'home', redirectTo: '' },
 
       // otherwise redirect to home

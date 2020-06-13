@@ -6,7 +6,7 @@ import {Movie} from '../_models/movie';
 import {MovieService} from '../_services/movie-service';
 import {SelectionModel} from '@angular/cdk/collections';
 import {DialogComponent} from '../dialog/dialog.component';
-import {UserService} from '../_services/user-service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-admin-panel',
@@ -28,7 +28,8 @@ export class AdminPanelComponent implements AfterViewInit  {
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
-  constructor(private movieService: MovieService, private dialog: MatDialog) {}
+  constructor(private movieService: MovieService, private dialog: MatDialog,
+              private router: Router) {}
 
   ngAfterViewInit() {
     // If the user changes the sort order, reset back to the first page.
@@ -104,12 +105,15 @@ export class AdminPanelComponent implements AfterViewInit  {
   }
 
   onDeleteClicked() {
-    this.openDialog('Are you sure to delete this movies?');
-    // TODO remove elements
+    // TODO this.openDialog('Are you sure to delete this movies?');
+    // for (let movieToDelete of this.selection.selected) {
+    //   this.movieService.delete(movieToDelete).subscribe();
+    // }
     this.selection.clear();
   }
 
   onEditClicked(row?: Movie) {
+    this.router.navigate(['/movie']);
   }
 
   openDialog(errorMsg: string) {

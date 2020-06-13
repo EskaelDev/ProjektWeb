@@ -23,4 +23,12 @@ export class MovieService {
   create(movie: Movie) {
     return this.http.post<Movie>(`${this.controllerUrl}`, movie);
   }
+
+  remove(movieId: string) {
+    return this.http.delete<Movie>(`${this.controllerUrl}${movieId}`);
+  }
+
+  saveFile(data: FormData) {
+    return this.http.post<string>(`${this.controllerUrl}/UploadFile`, data);
+  }
 }
