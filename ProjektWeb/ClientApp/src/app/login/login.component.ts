@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormBuilder, Validators} from '@angular/forms';
 import {User} from '../_models/user';
 import {MustMatch} from '../_helpers/must-match';
@@ -8,7 +8,6 @@ import {first} from 'rxjs/operators';
 import {UserService} from '../_services/user-service';
 import {MatDialog} from '@angular/material';
 import {DialogComponent} from '../dialog/dialog.component';
-import {Role} from '../_models/role';
 
 @Component({
   selector: 'app-login',
@@ -68,21 +67,6 @@ export class LoginComponent implements OnInit {
         });
   }
 
-  loginAlreadyCreatedUser(user: User) {
-    this.loading = true;
-    this.authenticationService.login(user.email, user.password)
-      .pipe(first())
-      .subscribe(
-        data => {
-          this.router.navigate([this.returnUrl]);
-        },
-        error => {
-          this.openDialog(error);
-          this.loading = false;
-          console.log(error);          
-        });
-  }
-
   save() {
     this.loading = true;
     const user: User = {
@@ -92,7 +76,11 @@ export class LoginComponent implements OnInit {
     };
     this.userService.create(user)
       .subscribe(
-        data => this.loginAlreadyCreatedUser(data),
+        data => {
+          this.openDialog(`You can login using ${data.email} email`);
+          this.loading = false;
+          this.signInClicked();
+        },
         error => {
           this.openDialog(error);
           this.loading = false;

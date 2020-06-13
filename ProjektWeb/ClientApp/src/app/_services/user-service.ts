@@ -13,6 +13,6 @@ export class UserService {
   }
 
   create(user: User) {
-    return this.http.post<User>(`${environment.apiUrl}/users`, user);
+    return this.http.post<User>(`${environment.apiUrl}/users/Register`, user);
   }
 }
