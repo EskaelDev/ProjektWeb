@@ -18,10 +18,11 @@ namespace ProjektWeb.Services
         IEnumerable<Rate> GetAllRates();
         IEnumerable<Rate> GetRatesByAuthor(string author);
 
-        IEnumerable<string> GetAllTags();
+        IQueryable<Tag> GetAllTags();
 
 
         Task<Element> AddElement(Element element);
+        Task<Tag> AddTag(Tag tag);
 
         void AddTagToElementById(int elementId, string tag);
 

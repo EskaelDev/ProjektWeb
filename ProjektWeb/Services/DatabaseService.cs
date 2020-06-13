@@ -80,11 +80,9 @@ namespace ProjektWeb.Services
             return databaseContext.Elements.Where(x => elementIds.Contains(x.Id)).ToList();
         }
 
-        public IEnumerable<string> GetAllTags()
+        public IQueryable<Tag> GetAllTags()
         {
-            List<string> tags = new List<string>();
-            databaseContext.Tags.Where(x => !x.IsDeleted).ToList().ForEach(x => tags.Add(x.Name));
-            return tags.Distinct();
+            return databaseContext.Tags.Where(x => !x.IsDeleted);            
         }
 
         public IQueryable<User> AuthenticateUser(string email, string password)
@@ -147,6 +145,11 @@ namespace ProjektWeb.Services
             databaseContext.SaveChanges();
             return databaseContext.Elements.Where(e => e.Id == element.Id);
         }
-
+        public async Task<Tag> AddTag(Tag tag)
+        {
+            await databaseContext.Tags.AddAsync(tag);
+            await databaseContext.SaveChangesAsync();
+            return tag;
+        }
     }
 }

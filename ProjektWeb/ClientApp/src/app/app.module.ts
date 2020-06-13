@@ -5,7 +5,15 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {MatButtonModule, MatChipsModule, MatDialogModule, MatGridListModule} from '@angular/material';
+import {
+  MatAutocompleteModule,
+  MatButtonModule,
+  MatCheckboxModule,
+  MatChipsModule,
+  MatDialogModule,
+  MatGridListModule,
+  MatTableModule
+} from '@angular/material';
 import { MainNavComponent } from './main-nav/main-nav.component';
 import { LayoutModule } from '@angular/cdk/layout';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -16,7 +24,6 @@ import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material';
 import { LoginComponent } from './login/login.component';
 import {ReactiveFormsModule} from '@angular/forms';
-import {fakeBackendProvider} from './_helpers/fake-backend-interceptor';
 import {ErrorInterceptor} from './_helpers/error-interceptor';
 import {JwtInterceptor} from './_helpers/jwt-interceptor';
 import {AuthGuard} from './_helpers/auth.guard';
@@ -25,6 +32,8 @@ import { AdminPanelComponent } from './admin-panel/admin-panel.component';
 import {Role} from './_models/role';
 import { HomeComponent } from './home/home.component';
 import { MoviePanelComponent } from './home/movie-panel/movie-panel.component';
+import { MatPaginatorModule, MatSortModule, MatProgressSpinnerModule} from '@angular/material';
+import { AddMovieComponent } from './admin-panel/add-movie/add-movie.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +44,7 @@ import { MoviePanelComponent } from './home/movie-panel/movie-panel.component';
     AdminPanelComponent,
     HomeComponent,
     MoviePanelComponent,
+    AddMovieComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -43,7 +53,9 @@ import { MoviePanelComponent } from './home/movie-panel/movie-panel.component';
     RouterModule.forRoot([
       { path: '', component: HomeComponent, canActivate: [AuthGuard] },
       { path: 'login', component: LoginComponent, pathMatch: 'full' },
-      { path: 'admin-panel', component: AdminPanelComponent, canActivate: [AuthGuard], data: {roles: [Role.Admin]} },
+      { path: 'admin', component: AdminPanelComponent, canActivate: [AuthGuard], data: {roles: [Role.Admin]} },
+      { path: 'add', component: AddMovieComponent, canActivate: [AuthGuard], data: {roles: [Role.Admin]} },
+      { path: 'home', redirectTo: '' },
 
       // otherwise redirect to home
       { path: '**', redirectTo: '/login' }
@@ -60,14 +72,20 @@ import { MoviePanelComponent } from './home/movie-panel/movie-panel.component';
     MatInputModule,
     MatDialogModule,
     MatGridListModule,
-    MatChipsModule
+    MatChipsModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatProgressSpinnerModule,
+    MatTableModule,
+    MatCheckboxModule,
+    MatAutocompleteModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
 
     // provider used to create fake backend
-    //fakeBackendProvider
+    // fakeBackendProvider
   ],
   bootstrap: [AppComponent],
   entryComponents: [DialogComponent]
