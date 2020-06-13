@@ -16,7 +16,7 @@ namespace ProjektWeb.Data.Models.Database
         public string Name { get; set; }
         public int ElementId { get; set; }
         [Required]
-        [DefaultValue(true)]
+        [DefaultValue(false)]
         public bool IsDeleted { get; set; }
     }
 }
