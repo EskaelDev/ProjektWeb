@@ -7,6 +7,7 @@ import {MovieService} from '../_services/movie-service';
 import {SelectionModel} from '@angular/cdk/collections';
 import {DialogComponent} from '../dialog/dialog.component';
 import {Router} from '@angular/router';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-admin-panel',
@@ -17,7 +18,7 @@ export class AdminPanelComponent implements AfterViewInit  {
   displayedColumns: string[] = ['photo', 'title', 'description', 'edit', 'select'];
   dataSource: MatTableDataSource<Movie> = new MatTableDataSource([]);
   selection = new SelectionModel<Movie>(true, []);
-
+env = environment;
   isLoadingResults = false;
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
