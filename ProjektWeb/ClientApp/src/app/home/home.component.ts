@@ -16,7 +16,7 @@ export class HomeComponent implements OnInit {
     this.movies = new Array<Movie>();
     movieService.getAll(0).subscribe(
       data => {
-        if (data.length > 0) {
+        if (data && data.length > 0) {
           data.forEach(element => {
             this.movies.push(element);
           });

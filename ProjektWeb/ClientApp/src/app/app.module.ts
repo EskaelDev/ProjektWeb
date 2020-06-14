@@ -5,7 +5,15 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {MatButtonModule, MatChipsModule, MatDialogModule, MatGridListModule} from '@angular/material';
+import {
+  MatAutocompleteModule,
+  MatButtonModule,
+  MatCheckboxModule,
+  MatChipsModule,
+  MatDialogModule,
+  MatGridListModule,
+  MatTableModule
+} from '@angular/material';
 import { MainNavComponent } from './main-nav/main-nav.component';
 import { LayoutModule } from '@angular/cdk/layout';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -16,7 +24,6 @@ import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material';
 import { LoginComponent } from './login/login.component';
 import {ReactiveFormsModule} from '@angular/forms';
-import {fakeBackendProvider} from './_helpers/fake-backend-interceptor';
 import {ErrorInterceptor} from './_helpers/error-interceptor';
 import {JwtInterceptor} from './_helpers/jwt-interceptor';
 import {AuthGuard} from './_helpers/auth.guard';
@@ -73,14 +80,17 @@ import {MovieResolver} from './admin-panel/movie/movie-resolver';
     MatInputModule,
     MatDialogModule,
     MatGridListModule,
-    MatChipsModule
+    MatChipsModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatProgressSpinnerModule,
+    MatTableModule,
+    MatCheckboxModule,
+    MatAutocompleteModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-
-    // provider used to create fake backend
-    //fakeBackendProvider
   ],
   bootstrap: [AppComponent],
   entryComponents: [DialogComponent]
