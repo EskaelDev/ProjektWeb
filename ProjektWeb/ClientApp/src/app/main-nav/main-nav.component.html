@@ -25,8 +25,8 @@
       <span class="spacer"></span>
       <a mat-button="" href="#" *ngIf="!isLoggedIn"><span class="mat-button-wrapper">About</span></a>
       <a mat-button="" href="#" *ngIf="!isLoggedIn"><span class="mat-button-wrapper">Contact</span></a>
-      <a mat-button="" routerLink="home" *ngIf="isLoggedIn"><span class="mat-button-wrapper">Home</span></a>
-      <a mat-button="" routerLink="admin" *ngIf="isLoggedIn && isAdmin"><span class="mat-button-wrapper">Admin</span></a>
+      <a mat-button="" href="#" *ngIf="isLoggedIn"><span class="mat-button-wrapper">Home</span></a>
+      <a mat-button="" href="#" *ngIf="isLoggedIn && isAdmin"><span class="mat-button-wrapper">Admin</span></a>
       <a mat-button="" href="#" *ngIf="isLoggedIn" (click)="logout()"><span class="mat-button-wrapper">Logout</span></a>
       <a mat-button="" href="#" *ngIf="!isLoggedIn"><span class="mat-button-wrapper">Login</span></a>
     </mat-toolbar>

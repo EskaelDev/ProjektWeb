@@ -7,7 +7,7 @@ import {PathResult} from '../_models/path-result';
 @Injectable({ providedIn: 'root' })
 export class MovieService {
   constructor(private http: HttpClient) { }
-  private readonly controllerUrl: String = `${environment.apiUrl}/element/`;
+  private readonly controllerUrl :String = `${environment.apiUrl}/element/`;
 
   getAll(page: number) {
     return this.http.get<Movie[]>(`${this.controllerUrl}all/${page}`);
@@ -18,10 +18,12 @@ export class MovieService {
   }
 
   getAllContains(tags: string[]) {
+    //return this.http.get<Movie[]>(`${environment.apiUrl}/movies/tags`);
     return this.http.get<Movie[]>(`${this.controllerUrl}`);
   }
 
   create(movie: Movie) {
+    //return this.http.post<Movie>(`${environment.apiUrl}/movies`, movie);
     return this.http.post<Movie>(`${this.controllerUrl}`, movie);
   }
 

@@ -22,7 +22,6 @@ export class AdminPanelComponent implements AfterViewInit  {
 
   dataSource: MatTableDataSource<Movie> = new MatTableDataSource([]);
   selection = new SelectionModel<Movie>(true, []);
-
   isLoadingResults = false;
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
