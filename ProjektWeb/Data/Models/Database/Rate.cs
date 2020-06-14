@@ -21,7 +21,7 @@ namespace ProjektWeb.Data.Models.Database
         public int Score { get; set; }
         public string Comment { get; set; }
         [Required]
-        [DefaultValue(true)]
+        [DefaultValue(false)]
         [JsonIgnore]
         public bool IsDeleted { get; set; }
         [JsonIgnore]

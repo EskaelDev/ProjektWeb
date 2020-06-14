@@ -14,7 +14,6 @@ namespace ProjektWeb.Data.Models.Database
     {
         [Key]
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
-        [JsonIgnore]
         public int Id { get; set; }
         [Required]
         public string Title { get; set; }
@@ -23,7 +22,7 @@ namespace ProjektWeb.Data.Models.Database
         public string ImagePath { get; set; }
 
         [Required]
-        [DefaultValue(true)]
+        [DefaultValue(false)]
         [JsonIgnore]
         public bool IsDeleted { get; set; }
 

@@ -19,7 +19,7 @@ namespace ProjektWeb.Data.Models.Database
         [JsonIgnore]
         public int ElementId { get; set; }
         [Required]
-        [DefaultValue(true)]
+        [DefaultValue(false)]
         [JsonIgnore]
         public bool IsDeleted { get; set; }
     }

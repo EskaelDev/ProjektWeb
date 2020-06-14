@@ -27,7 +27,7 @@ namespace ProjektWeb.Data.Entities
 
         public string Token { get; set; }
         [Required]
-        [DefaultValue(true)]
+        [DefaultValue(false)]
         public bool IsDeleted { get; set; }
 
         [JsonIgnore]
