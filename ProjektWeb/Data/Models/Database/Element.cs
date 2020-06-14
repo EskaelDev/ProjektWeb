@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace ProjektWeb.Data.Models.Database
@@ -13,6 +14,7 @@ namespace ProjektWeb.Data.Models.Database
     {
         [Key]
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
+        [JsonIgnore]
         public int Id { get; set; }
         [Required]
         public string Title { get; set; }
@@ -22,6 +24,7 @@ namespace ProjektWeb.Data.Models.Database
 
         [Required]
         [DefaultValue(true)]
+        [JsonIgnore]
         public bool IsDeleted { get; set; }
 
         [ForeignKey("ElementId")]

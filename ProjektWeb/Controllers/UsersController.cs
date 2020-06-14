@@ -53,7 +53,10 @@ namespace ProjektWeb.Controllers
                 Password = model.Password
             };
 
-            await _usersService.Register(user);
+            User registeredUser = await _usersService.Register(user);
+
+            if (registeredUser == null)
+                return StatusCode(409, $"Email '{model.Email}' already exists.");
 
             return Ok(user);
         }

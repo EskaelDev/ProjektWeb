@@ -38,7 +38,7 @@ namespace ProjektWeb.Services
 
         public Element GetElementByName(string title)
         {
-            return databaseContext.Elements.Where(x => x.Title == title).FirstOrDefault();
+            return databaseContext.Elements.Where(x => x.Title.ToUpper() == title.ToUpper()).FirstOrDefault();
         }
 
         public Task<Element> AddElement(Element element)
@@ -46,6 +46,33 @@ namespace ProjektWeb.Services
             databaseContext.Elements.Add(element);
             databaseContext.SaveChanges();
             return databaseContext.Elements.Where(e => e.Id == element.Id).FirstOrDefaultAsync();
+        }
+
+        public async Task<bool> DeleteElementById(int id)
+        {
+            var elementToDelete = GetElementById(id).FirstOrDefault();
+
+            if (elementToDelete == null)
+                return false;
+
+            using (var transaction = databaseContext.Database.BeginTransaction())
+            {
+                try
+                {
+                    databaseContext.Remove(elementToDelete);
+                    await databaseContext.SaveChangesAsync();
+
+                    transaction.Commit();
+                    return true;
+
+                }
+                catch (Exception)
+                {
+                    transaction.Rollback();
+                    return false;
+                }
+            }
+
         }
 
         public void AddTagToElementById(int elementId, string tag)
@@ -61,7 +88,7 @@ namespace ProjektWeb.Services
 
         public IEnumerable<Rate> GetRatesByAuthor(string author)
         {
-            return databaseContext.Rates.Where(x => x.Author == author && !x.IsDeleted).ToList();
+            return databaseContext.Rates.Where(x => x.Author.ToUpper() == author.ToUpper() && !x.IsDeleted).ToList();
         }
 
         public IEnumerable<Rate> GetRatesByElementId(int elementId)
@@ -76,7 +103,7 @@ namespace ProjektWeb.Services
 
         public IEnumerable<Element> GetElementsContainingTag(string tag)
         {
-            List<int> elementIds = databaseContext.Tags.Where(x => x.Name == tag && !x.IsDeleted).Select(x => x.ElementId).ToList();
+            List<int> elementIds = databaseContext.Tags.Where(x => x.Name.ToUpper() == tag.ToUpper() && !x.IsDeleted).Select(x => x.ElementId).ToList();
             return databaseContext.Elements.Where(x => elementIds.Contains(x.Id)).ToList();
         }
 
@@ -99,7 +126,7 @@ namespace ProjektWeb.Services
         }
         public IQueryable<User> GetUserByEmail(string email)
         {
-            return databaseContext.Users.Where(u => u.NormalizedEmail == email && !u.IsDeleted);
+            return databaseContext.Users.Where(u => u.NormalizedEmail == email.ToUpper() && !u.IsDeleted);
         }
 
         public IQueryable<User> AddUser(User user)
@@ -109,7 +136,7 @@ namespace ProjektWeb.Services
             return GetUserByEmail(user.NormalizedEmail);
         }
 
-        public async Task<bool> DeleteElementById(int id)
+        public async Task<bool> DeleteUserById(int id)
         {
             var userToDelete = GetUserById(id).FirstOrDefault();
 

@@ -34,7 +34,7 @@ namespace ProjektWeb.Services
 
         public async Task<User> Authenticate(string normalizedEmail, string password)
         {
-            var user = await _databaseService.GetUserByEmail(normalizedEmail).FirstOrDefaultAsync();
+            var user = await _databaseService.GetUserByEmail(normalizedEmail.ToUpper()).FirstOrDefaultAsync();
 
             if (user == null)
                 return null;
@@ -56,6 +56,9 @@ namespace ProjektWeb.Services
 
         public async Task<User> Register(User newUser)
         {
+            if (_databaseService.GetUserByEmail(newUser.Email).FirstOrDefault() != null) 
+                return null;
+
             newUser.Salt = Security.CreateSalt();
             newUser.NormalizedEmail = newUser.Email.ToUpper();
             newUser.Password = Security.HashPassword(newUser.Password, newUser.Salt);
@@ -65,7 +68,7 @@ namespace ProjektWeb.Services
 
         public bool IsAdmin()
         {
-            return (GetCurrentUser().Result.Role != Data.Entities.UserRoles.admin);
+            return (GetCurrentUser().Result.Role == Data.Entities.UserRoles.admin);
         }
 
         protected async Task<User> GetCurrentUser()
