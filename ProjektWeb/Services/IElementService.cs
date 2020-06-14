@@ -12,6 +12,7 @@ namespace ProjektWeb.Services
         public Task<List<Element>> GetMany(int pageNumber, int pageSize);
         public Task<Element> Create(ElementViewModel element);
         public Task<Element> Get(int id);
+        public Task<int> GetCount();
 
         public Task<bool> Delete(int id);
 

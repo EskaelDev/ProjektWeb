@@ -170,5 +170,10 @@ namespace ProjektWeb.Services
             return databaseContext.Elements.Where(e => e.Id == element.Id);
         }
 
+        public Task<int> GetElementCount()
+        {
+            return databaseContext.Elements.Where(x => !x.IsDeleted).CountAsync();
+        }
+
     }
 }

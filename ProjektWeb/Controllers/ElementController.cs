@@ -61,6 +61,12 @@ namespace ProjektWeb.Controllers
             return NoContent();
         }
 
+        [HttpGet("count")]
+        public async Task<ActionResult<int>> GetCount()
+        {
+            return Ok(new { count = await _elementService.GetCount() });
+        }
+
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int? id)
         {

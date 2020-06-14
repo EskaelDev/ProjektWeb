@@ -8,6 +8,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {Tag} from '../../_models/tag';
 import {MovieReq} from '../../_models/movie-req';
 import {map} from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-add-movie',
@@ -122,7 +123,7 @@ export class MovieComponent implements AfterViewInit {
         movie => {
           this.movie = movie;
           this.tags = movie.tags;
-          this.imgURL = '~' + movie.imagePath;
+          this.imgURL = environment.staticFilesUrl + movie.imagePath;
         }
       ); });
   }

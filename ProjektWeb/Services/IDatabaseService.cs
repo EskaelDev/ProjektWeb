@@ -42,5 +42,7 @@ namespace ProjektWeb.Services
 
         IQueryable<Element> UpdateElement(Element element);
 
+        Task<int> GetElementCount();
+
     }
 }

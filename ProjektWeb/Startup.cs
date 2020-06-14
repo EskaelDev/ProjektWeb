@@ -102,6 +102,7 @@ namespace ProjektWeb
             app.UseStaticFiles();
             app.UseStaticFiles(new StaticFileOptions()
             {
+                ServeUnknownFileTypes = true,
                 FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot")),
                 RequestPath = new PathString("/wwwroot")
             });

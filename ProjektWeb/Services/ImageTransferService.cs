@@ -42,7 +42,7 @@ namespace ProjektWeb.Services
                 {
                     await file.CopyToAsync(fileStream);
                 }
-                return path;
+                return Path.Combine("/wwwroot/elements/images", file.FileName + ".png");
             }
             catch (Exception e)
             {

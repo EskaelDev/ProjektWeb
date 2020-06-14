@@ -43,6 +43,10 @@ namespace ProjektWeb.Services
         {
             return await _databaseService.GetElementById(id).FirstOrDefaultAsync();
         }
+        public async Task<int> GetCount()
+        {
+            return await _databaseService.GetElementCount();
+        }
 
         public async Task<bool> Delete(int id)
         {
