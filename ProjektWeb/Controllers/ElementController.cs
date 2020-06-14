@@ -5,6 +5,7 @@ using ProjektWeb.Data.Models.Database;
 using ProjektWeb.Services;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -92,9 +93,10 @@ namespace ProjektWeb.Controllers
         }
 
         [HttpPost("uploadfile")]
-        public async Task<string> UploadFile()
+        public async Task<ActionResult<string>> UploadFile()
         {
-            return await _imageService.SaveFile(HttpContext.Request.Form);
+            var result = new { path = await _imageService.SaveFile(HttpContext.Request.Form) };
+            return Ok(result);
         }
     }
 }

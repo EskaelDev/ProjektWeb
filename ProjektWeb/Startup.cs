@@ -13,6 +13,8 @@ using ProjektWeb.Services;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.AspNetCore.Http.Features;
+using System;
 
 namespace ProjektWeb
 {
@@ -69,6 +71,10 @@ namespace ProjektWeb
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp/dist";
+            });
+            services.Configure<FormOptions>(options =>
+            {
+                options.MemoryBufferThreshold = Int32.MaxValue;
             });
         }
 
