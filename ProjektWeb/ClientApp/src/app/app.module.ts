@@ -34,7 +34,6 @@ import { HomeComponent } from './home/home.component';
 import { MoviePanelComponent } from './home/movie-panel/movie-panel.component';
 import { MatPaginatorModule, MatSortModule, MatProgressSpinnerModule} from '@angular/material';
 import { MovieComponent } from './admin-panel/movie/movie.component';
-import {MovieResolver} from './admin-panel/movie/movie-resolver';
 
 @NgModule({
   declarations: [
@@ -59,9 +58,7 @@ import {MovieResolver} from './admin-panel/movie/movie-resolver';
       {
         path: 'movie/:movieId',
         component: MovieComponent,
-        resolve: {
-          book: MovieResolver
-        }
+        canActivate: [AuthGuard], data: {roles: [Role.Admin]}
       },
       { path: 'home', redirectTo: '' },
 

@@ -3,14 +3,15 @@ import {environment} from '../../environments/environment';
 import {Injectable} from '@angular/core';
 import {Movie} from '../_models/movie';
 import {PathResult} from '../_models/path-result';
+import {MovieReq} from '../_models/movie-req';
 
 @Injectable({ providedIn: 'root' })
 export class MovieService {
   constructor(private http: HttpClient) { }
-  private readonly controllerUrl :String = `${environment.apiUrl}/element/`;
+  private readonly controllerUrl: String = `${environment.apiUrl}/element/`;
 
-  getAll(page: number) {
-    return this.http.get<Movie[]>(`${this.controllerUrl}all/${page}`);
+  getAll(page: number, pageSize: number) {
+    return this.http.get<Movie[]>(`${this.controllerUrl}all/${page}/${pageSize}`);
   }
 
   getSeveral(count: number) {
@@ -18,13 +19,15 @@ export class MovieService {
   }
 
   getAllContains(tags: string[]) {
-    //return this.http.get<Movie[]>(`${environment.apiUrl}/movies/tags`);
     return this.http.get<Movie[]>(`${this.controllerUrl}`);
   }
 
-  create(movie: Movie) {
-    //return this.http.post<Movie>(`${environment.apiUrl}/movies`, movie);
-    return this.http.post<Movie>(`${this.controllerUrl}`, movie);
+  create(movie: MovieReq) {
+    return this.http.post<Movie>(`${this.controllerUrl}save`, movie);
+  }
+
+  update(movie: MovieReq, movieId: number) {
+    return this.http.put<Movie>(`${this.controllerUrl}${movieId}`, movie);
   }
 
   remove(movieId: string) {
@@ -36,6 +39,6 @@ export class MovieService {
   }
 
   findMovieById(movieId: number) {
-    return this.http.get<Movie>(`${this.controllerUrl}/${movieId}`);
+    return this.http.get<Movie>(`${this.controllerUrl}${movieId}`);
   }
 }

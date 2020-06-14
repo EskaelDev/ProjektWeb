@@ -15,11 +15,6 @@ import {Router} from '@angular/router';
 })
 export class AdminPanelComponent implements AfterViewInit  {
   displayedColumns: string[] = ['photo', 'title', 'description', 'edit', 'select'];
-  movies: Movie[] = [{ title: 'Suits', description: 'On the run from a drug deal gone bad, brilliant college dropout Mike Ross, finds himself working with Harvey Specter, one of New York City\'s best lawyers.',
-    imagePath: 'https://www.multikurs.pl/uploads_public/cms/component-25162/suits-7591.jpg', tags: [{name: 'lawyers'}, {name: 'comedy'}, {name: 'suits'}]},
-    { title: 'Suits2', description: 'On the run from a drug deal gone bad, brilliant college dropout Mike Ross, finds himself working with Harvey Specter, one of New York City\'s best lawyers.',
-      imagePath: 'https://www.multikurs.pl/uploads_public/cms/component-25162/suits-7591.jpg', tags: [{name: 'lawyers'}, {name: 'comedy'}, {name: 'suits'}]}];
-
   dataSource: MatTableDataSource<Movie> = new MatTableDataSource([]);
   selection = new SelectionModel<Movie>(true, []);
 
@@ -34,24 +29,13 @@ export class AdminPanelComponent implements AfterViewInit  {
   ngAfterViewInit() {
     // If the user changes the sort order, reset back to the first page.
     this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
-    for (let _i = 0; _i < 9; _i++) {
-      const old = this.movies[0];
-      const newMovie: Movie = {
-        title: old.title,
-        description: old.description,
-        imagePath: old.imagePath,
-        tags: []
-      };
-      this.movies.push(newMovie);
-    }
 
     merge(this.sort.sortChange, this.paginator.page)
       .pipe(
         startWith({}),
         switchMap(() => {
           this.isLoadingResults = true;
-          // return this.movieService.getAll(100);
-          return observableOf(this.movies);
+          return this.movieService.getAll(this.paginator.pageIndex, this.paginator.pageSize);
         }),
         map(data => {
           // Flip flag to show that loading has finished.
