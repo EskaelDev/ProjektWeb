@@ -26,13 +26,14 @@ namespace ProjektWeb.Controllers
 
         [AllowAnonymous]
         [HttpGet("all/{page}/{pagesize}")]
-        public async Task<ActionResult<List<Element>>> GetAll(int? page, int? pagesize)
+        public async Task<ActionResult<List<Object>>> GetAll(int? page, int? pagesize)
         {
             var result = await _elementService.GetMany(page.GetValueOrDefault(1), pagesize.GetValueOrDefault(5));
+            var count = await _elementService.GetCount();
             if (result.Count <= 0)
                 return NoContent();
             else
-                return Ok(result);
+                return Ok(new { movies = result, count = count });
         }
 
         [HttpPost("save")]
@@ -59,12 +60,6 @@ namespace ProjektWeb.Controllers
                     return Ok(result);
             }
             return NoContent();
-        }
-
-        [HttpGet("count")]
-        public async Task<ActionResult<int>> GetCount()
-        {
-            return Ok(new { count = await _elementService.GetCount() });
         }
 
         [HttpDelete("{id}")]

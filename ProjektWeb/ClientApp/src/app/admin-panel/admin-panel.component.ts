@@ -7,7 +7,7 @@ import {MovieService} from '../_services/movie-service';
 import {SelectionModel} from '@angular/cdk/collections';
 import {DialogComponent} from '../dialog/dialog.component';
 import {Router} from '@angular/router';
-import { environment } from 'src/environments/environment';
+import {environment} from '../../environments/environment';
 
 @Component({
   selector: 'app-admin-panel',
@@ -21,12 +21,14 @@ export class AdminPanelComponent implements AfterViewInit  {
 
   resultsLength = 0;
   isLoadingResults = false;
+  env = environment;
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
   constructor(private movieService: MovieService, private dialog: MatDialog,
-              private router: Router) {}
+              private router: Router) {
+  }
 
   ngAfterViewInit() {
     // If the user changes the sort order, reset back to the first page.
@@ -39,11 +41,11 @@ export class AdminPanelComponent implements AfterViewInit  {
           this.isLoadingResults = true;
           return this.movieService.getAll(this.paginator.pageIndex, this.paginator.pageSize);
         }),
-        map(data => {
+        map(movieApi => {
           // Flip flag to show that loading has finished.
           this.isLoadingResults = false;
-          this.movieService.getCount().subscribe(mCount => this.resultsLength = mCount.count);
-          return data;
+          this.resultsLength = movieApi.count;
+          return movieApi.movies;
         }),
         catchError(() => {
           this.isLoadingResults = false;
@@ -92,9 +94,12 @@ export class AdminPanelComponent implements AfterViewInit  {
   onDeleteClicked() {
     // TODO this.openDialog('Are you sure to delete this movies?');
     for (const movieToDelete of this.selection.selected) {
-      this.movieService.delete(movieToDelete.id).subscribe();
+      this.movieService.delete(movieToDelete.id).subscribe(
+        data => console.log(data)
+      );
     }
     this.selection.clear();
+    this.paginator._changePageSize(this.paginator.pageSize);
   }
 
   onEditClicked(row?: Movie) {

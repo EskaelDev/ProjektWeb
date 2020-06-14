@@ -122,7 +122,7 @@ export class MovieComponent implements AfterViewInit {
       this.movieService.findMovieById(id).subscribe(
         movie => {
           this.movie = movie;
-          this.tags = movie.tags;
+          this.tags = movie.tags ? movie.tags : [];
           this.imgURL = environment.staticFilesUrl + movie.imagePath;
         }
       ); });

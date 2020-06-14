@@ -5,6 +5,8 @@ import {Movie} from '../_models/movie';
 import {PathResult} from '../_models/path-result';
 import {MovieReq} from '../_models/movie-req';
 import {MoviesCount} from '../_models/movies-count';
+// @ts-ignore
+import {MovieApi} from '../_models/movie-api';
 
 @Injectable({ providedIn: 'root' })
 export class MovieService {
@@ -12,7 +14,7 @@ export class MovieService {
   private readonly controllerUrl: String = `${environment.apiUrl}/element/`;
 
   getAll(page: number, pageSize: number) {
-    return this.http.get<Movie[]>(`${this.controllerUrl}all/${page}/${pageSize}`);
+    return this.http.get<MovieApi>(`${this.controllerUrl}all/${page}/${pageSize}`);
   }
 
   getCount() {
