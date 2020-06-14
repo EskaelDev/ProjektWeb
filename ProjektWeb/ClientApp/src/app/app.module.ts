@@ -34,6 +34,7 @@ import { HomeComponent } from './home/home.component';
 import { MoviePanelComponent } from './home/movie-panel/movie-panel.component';
 import { MatPaginatorModule, MatSortModule, MatProgressSpinnerModule} from '@angular/material';
 import { MovieComponent } from './admin-panel/movie/movie.component';
+import {MovieResolver} from './admin-panel/movie/movie-resolver';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,7 @@ import { MovieComponent } from './admin-panel/movie/movie.component';
     AdminPanelComponent,
     HomeComponent,
     MoviePanelComponent,
-    MovieComponent,
+    MovieComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -55,6 +56,13 @@ import { MovieComponent } from './admin-panel/movie/movie.component';
       { path: 'login', component: LoginComponent, pathMatch: 'full' },
       { path: 'admin', component: AdminPanelComponent, canActivate: [AuthGuard], data: {roles: [Role.Admin]} },
       { path: 'movie', component: MovieComponent, canActivate: [AuthGuard], data: {roles: [Role.Admin]} },
+      {
+        path: 'movie/:movieId',
+        component: MovieComponent,
+        resolve: {
+          book: MovieResolver
+        }
+      },
       { path: 'home', redirectTo: '' },
 
       // otherwise redirect to home

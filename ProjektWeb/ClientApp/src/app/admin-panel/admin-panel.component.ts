@@ -113,7 +113,7 @@ export class AdminPanelComponent implements AfterViewInit  {
   }
 
   onEditClicked(row?: Movie) {
-    this.router.navigate(['/movie']);
+    this.router.navigate(['/movie', row.id]);
   }
 
   openDialog(errorMsg: string) {

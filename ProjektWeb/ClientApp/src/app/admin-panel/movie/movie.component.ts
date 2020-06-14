@@ -5,6 +5,7 @@ import {MatChipInputEvent} from '@angular/material';
 import {FormBuilder, Validators} from '@angular/forms';
 import {MovieService} from '../../_services/movie-service';
 import {Router} from '@angular/router';
+import {Tag} from '../../_models/tag';
 
 @Component({
   selector: 'app-add-movie',
@@ -26,7 +27,7 @@ export class MovieComponent implements OnInit{
   removable = true;
   addOnBlur = true;
   separatorKeysCodes: number[] = [ENTER, COMMA];
-  tags: string[] = this.movie ? this.movie.tags : ['comedy'];
+  tags: Tag[] = this.movie ? this.movie.tags : [];
 
   createForm = this.fb.group({
     title: ['', Validators.required],
@@ -46,13 +47,14 @@ export class MovieComponent implements OnInit{
 
     const data = new FormData();
     data.append('uploadFile', this.movieFile, this.movie.title);
-    this.movieService.saveFile(data).subscribe(
-      path => {
-        this.movie.imagePath = path;
-        this.movieService.create(this.movie).subscribe(
-          movie => this.router.navigate(['/admin'])
-        );
-      });
+    this.movieService.saveFile(data)
+      .subscribe(
+        result => {
+          this.movie.imagePath = result.path;
+            this.movieService.create(this.movie).subscribe(
+              movie => this.router.navigate(['/admin'])
+            );
+        });
   }
 
   isFormValid() {
@@ -64,9 +66,12 @@ export class MovieComponent implements OnInit{
     const input = event.input;
     const value = event.value;
 
-    // Add our fruit
+    // Add our tag
     if ((value || '').trim()) {
-      this.tags.push(value.trim());
+      const nTag: Tag = {
+        name: value.trim()
+      };
+      this.tags.push(nTag);
     }
 
     // Reset the input value
@@ -75,7 +80,7 @@ export class MovieComponent implements OnInit{
     }
   }
 
-  remove(tag: string): void {
+  remove(tag: Tag): void {
     const index = this.tags.indexOf(tag);
 
     if (index >= 0) {

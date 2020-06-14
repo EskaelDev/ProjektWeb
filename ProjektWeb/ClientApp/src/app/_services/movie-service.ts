@@ -2,6 +2,7 @@ import {HttpClient} from '@angular/common/http';
 import {environment} from '../../environments/environment';
 import {Injectable} from '@angular/core';
 import {Movie} from '../_models/movie';
+import {PathResult} from '../_models/path-result';
 
 @Injectable({ providedIn: 'root' })
 export class MovieService {
@@ -29,6 +30,10 @@ export class MovieService {
   }
 
   saveFile(data: FormData) {
-    return this.http.post<string>(`${this.controllerUrl}uploadfile`, data);
+    return this.http.post<PathResult>(`${this.controllerUrl}uploadfile`, data);
+  }
+
+  findMovieById(movieId: number) {
+    return this.http.get<Movie>(`${this.controllerUrl}/${movieId}`);
   }
 }
