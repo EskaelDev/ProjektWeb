@@ -1,0 +1,37 @@
+<!-- <ng-container *ngIf="model!=null; else fetchingModel"> -->
+<ng-container *ngIf="model==null; else fetchingModel"
+              class="container ">
+    <div class="row mt-3">
+        <img class="col"
+             src="https://interactive-examples.mdn.mozilla.net/media/examples/grapefruit-slice-332-332.jpg">
+        <div class="col">
+            <div id="title">
+                <h2 style="display: inline ">TYTUŁ FILMU ŚREDNI </h2>
+                <h2 style="display: inline " class="average text-right float-right">6.4</h2>
+            </div>
+            <div id="desription"
+                 class="mt-4">
+                There are many variations of passages of Lorem Ipsum available, but the majority have suffered
+                alteration in some form, by injected humour, or randomised words which don't look even slightly
+                believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything
+                embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat
+                predefined chunks as necessary, making this the first true generator on the Internet. It uses a
+                dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate
+                Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition,
+                injected humour, or non-characteristic words etc.
+            </div>
+        </div>
+    </div>
+    <div *ngIf="rates!=null; else fetchingRates">
+        <div class="row mt-5"
+             *ngFor="let rate of rates">
+            <app-rate [rate]="rate"></app-rate>
+        </div>
+    </div>
+    <ng-template #fetchingRates>
+        <mat-spinner class="rates-loader"></mat-spinner>
+    </ng-template>
+</ng-container>
+<ng-template #fetchingModel>
+    <mat-spinner class="model-loader"></mat-spinner>
+</ng-template>

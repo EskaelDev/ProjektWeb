@@ -1,0 +1,19 @@
+.model-loader {
+    left: 50%;
+    margin-left: -4em;
+    bottom: 45%;
+    position: fixed;
+    top: 40%;
+}
+
+.rates-loader {
+    left: 50%;
+    margin-left: -4em;
+    bottom: 45%;
+    position: relative;
+    margin-top: 10px;
+}
+.average{
+    background-color: blueviolet;
+    padding: 2px;
+}
