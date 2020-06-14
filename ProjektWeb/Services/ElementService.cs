@@ -28,7 +28,14 @@ namespace ProjektWeb.Services
             if (_databaseService.GetElementByName(newElement.Title) != null)
                 return Task.FromResult<Element>(null);
 
-            var element = CreateElementFromElementViewModel(newElement);
+            var element = new Element
+            {
+                Title = newElement.Title,
+                Tags = newElement.Tags != null ? newElement.Tags.Select(x => new Tag { Name = x }).ToList() : null,
+                ImagePath = newElement.ImagePath,
+                Description = newElement.Description
+            };
+
             return _databaseService.AddElement(element);
         }
 
@@ -43,18 +50,11 @@ namespace ProjektWeb.Services
         }
         public async Task<Element> Update(ElementViewModel newElement)
         {
-            var element = CreateElementFromElementViewModel(newElement);
+            var element = _databaseService.GetElementByName(newElement.Title);
+            element.Description = newElement.Description;
+            element.Tags = newElement.Tags != null ? newElement.Tags.Select(x => new Tag { Name = x }).ToList() : null;
+            element.ImagePath = newElement.ImagePath;
             return await _databaseService.UpdateElement(element).FirstOrDefaultAsync();
-        }
-
-        private Element CreateElementFromElementViewModel(ElementViewModel newElement)
-        {
-            return new Element
-            {
-                Title = newElement.Title,
-                Tags = newElement.Tags != null ? newElement.Tags.Select(x => new Tag { Name = x }).ToList() : null,
-                ImagePath = null
-            };
         }
     }
 }
