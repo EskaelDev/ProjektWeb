@@ -36,7 +36,6 @@ namespace ProjektWeb.Controllers
                 return Ok(result);
         }
 
-
         [HttpPost("save")]
         public async Task<ActionResult<Element>> Post([FromBody] ElementViewModel newElement)
         {
@@ -45,22 +44,25 @@ namespace ProjektWeb.Controllers
 
             var result = await _elementService.Create(newElement);
 
+            if (result == null)
+                return StatusCode(409, $"Element '{newElement.Title}' already exists.");
+
             return Ok(result);
         }
 
-        [HttpGet("/{id}")]
+        [HttpGet("{id}")]
         public async Task<ActionResult<List<Element>>> Get(int? id)
         {
             if (id.HasValue)
             {
                 var result = await _elementService.Get(id.Value);
-                if (result == null)
+                if (result != null)
                     return Ok(result);
             }
             return NoContent();
         }
 
-        [HttpDelete("/{id}")]
+        [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int? id)
         {
             if (!_usersService.IsAdmin())
@@ -76,7 +78,7 @@ namespace ProjektWeb.Controllers
             return NoContent();
         }
 
-        [HttpPut("/{id}")]
+        [HttpPut("{id}")]
         public async Task<ActionResult<List<Element>>> Put(ElementViewModel updatedElement)
         {
             if (!_usersService.IsAdmin())
