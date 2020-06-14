@@ -18,6 +18,7 @@ export class AdminPanelComponent implements AfterViewInit  {
   dataSource: MatTableDataSource<Movie> = new MatTableDataSource([]);
   selection = new SelectionModel<Movie>(true, []);
 
+  resultsLength = 0;
   isLoadingResults = false;
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
@@ -40,7 +41,7 @@ export class AdminPanelComponent implements AfterViewInit  {
         map(data => {
           // Flip flag to show that loading has finished.
           this.isLoadingResults = false;
-
+          this.movieService.getCount().subscribe(mCount => this.resultsLength = mCount.count);
           return data;
         }),
         catchError(() => {
@@ -48,9 +49,8 @@ export class AdminPanelComponent implements AfterViewInit  {
           return observableOf([]);
         })
       ).subscribe(data => {
-      this.dataSource = new MatTableDataSource(data);
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
+        this.dataSource = new MatTableDataSource(data);
+        this.dataSource.sort = this.sort;
     });
   }
 
@@ -90,9 +90,9 @@ export class AdminPanelComponent implements AfterViewInit  {
 
   onDeleteClicked() {
     // TODO this.openDialog('Are you sure to delete this movies?');
-    // for (let movieToDelete of this.selection.selected) {
-    //   this.movieService.delete(movieToDelete).subscribe();
-    // }
+    for (const movieToDelete of this.selection.selected) {
+      this.movieService.delete(movieToDelete.id).subscribe();
+    }
     this.selection.clear();
   }
 
