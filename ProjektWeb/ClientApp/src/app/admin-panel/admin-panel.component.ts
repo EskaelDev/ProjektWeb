@@ -93,13 +93,16 @@ export class AdminPanelComponent implements AfterViewInit  {
 
   onDeleteClicked() {
     // TODO this.openDialog('Are you sure to delete this movies?');
-    for (const movieToDelete of this.selection.selected) {
-      this.movieService.delete(movieToDelete.id).subscribe(
-        data => console.log(data)
-      );
-    }
+    this.selection.selected.forEach(item => {
+      this.movieService.delete(item.id).subscribe( data => {
+      const index: number = this.dataSource.data.findIndex(d => d === item);
+      console.log(this.dataSource.data.findIndex(d => d === item));
+      this.dataSource.data.splice(index, 1);
+      this.dataSource = new MatTableDataSource<Movie>(this.dataSource.data);
+      this.dataSource.sort = this.sort;
+      this.resultsLength -= 1;
+    }); });
     this.selection.clear();
-    this.paginator._changePageSize(this.paginator.pageSize);
   }
 
   onEditClicked(row?: Movie) {
