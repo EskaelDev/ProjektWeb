@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace ProjektWeb.Data.Models.Database
@@ -21,7 +22,8 @@ namespace ProjektWeb.Data.Models.Database
         public string ImagePath { get; set; }
 
         [Required]
-        [DefaultValue(true)]
+        [DefaultValue(false)]
+        [JsonIgnore]
         public bool IsDeleted { get; set; }
 
         [ForeignKey("ElementId")]

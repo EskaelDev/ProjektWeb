@@ -28,17 +28,12 @@ namespace ProjektWeb.Controllers
         [HttpGet("all/{page}/{pagesize}")]
         public async Task<ActionResult<List<Element>>> GetAll(int? page, int? pagesize)
         {
-            if (page == null)
-                page = 1;
-            if (pagesize == null)
-                pagesize = 5;
-            var result = await _elementService.GetMany(page, pagesize);
+            var result = await _elementService.GetMany(page.GetValueOrDefault(1), pagesize.GetValueOrDefault(5));
             if (result.Count <= 0)
                 return NoContent();
             else
                 return Ok(result);
         }
-
 
         [HttpPost("save")]
         public async Task<ActionResult<Element>> Post([FromBody] ElementViewModel newElement)
@@ -48,22 +43,25 @@ namespace ProjektWeb.Controllers
 
             var result = await _elementService.Create(newElement);
 
+            if (result == null)
+                return StatusCode(409, $"Element '{newElement.Title}' already exists.");
+
             return Ok(result);
         }
 
-        [HttpGet("/{id}")]
+        [HttpGet("{id}")]
         public async Task<ActionResult<List<Element>>> Get(int? id)
         {
             if (id.HasValue)
             {
                 var result = await _elementService.Get(id.Value);
-                if (result == null)
+                if (result != null)
                     return Ok(result);
             }
             return NoContent();
         }
 
-        [HttpDelete("/{id}")]
+        [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int? id)
         {
             if (!_usersService.IsAdmin())
@@ -79,7 +77,7 @@ namespace ProjektWeb.Controllers
             return NoContent();
         }
 
-        [HttpPut("/{id}")]
+        [HttpPut("{id}")]
         public async Task<ActionResult<List<Element>>> Put(ElementViewModel updatedElement)
         {
             if (!_usersService.IsAdmin())

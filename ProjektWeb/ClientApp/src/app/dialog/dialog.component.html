@@ -1,11 +1,5 @@
 <h1 mat-dialog-title>{{ data.title }}</h1>
 <div mat-dialog-content>{{ data.content }}</div>
-<div mat-dialog-actions class="float-left" *ngIf="data.isDecisionDialog">
-  <button mat-button mat-dialog-close> Yes </button>
-</div>
-<div mat-dialog-actions class="float-right" *ngIf="data.isDecisionDialog">
-  <button mat-raised-button color="warn" mat-dialog-close> No </button>
-</div>
-<div mat-dialog-actions class="float-right" *ngIf="!data.isDecisionDialog">
+<div mat-dialog-actions class="float-right">
   <button mat-button mat-dialog-close> Ok </button>
 </div>

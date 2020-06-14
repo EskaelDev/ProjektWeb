@@ -22,6 +22,7 @@ namespace ProjektWeb.Services
 
 
         Task<Element> AddElement(Element element);
+        Task<bool> DeleteElementById(int id);
 
         void AddTagToElementById(int elementId, string tag);
 
@@ -37,7 +38,7 @@ namespace ProjektWeb.Services
 
         IQueryable<User> GetUserByEmail(string email);
 
-        Task<bool> DeleteElementById(int id);
+        Task<bool> DeleteUserById(int id);
 
         IQueryable<Element> UpdateElement(Element element);
 

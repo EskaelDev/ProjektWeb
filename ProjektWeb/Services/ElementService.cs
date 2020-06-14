@@ -9,24 +9,33 @@ using System.Threading.Tasks;
 namespace ProjektWeb.Services
 {
     public class ElementService : IElementService
-    {        
+    {
         private IDatabaseService _databaseService;
-
+ 
         public ElementService(IDatabaseService databaseService)
         {
             _databaseService = databaseService;
         }
-
-        public Task<List<Element>> GetMany(int? pageNumber, int? pageSize)
+ 
+        public Task<List<Element>> GetMany(int pageNumber, int pageSize)
         {
-            int pagesize = pageSize.GetValueOrDefault(1);
-            return _databaseService.GetLazyAllElements().Skip(pageNumber.GetValueOrDefault(0) * pagesize).Take(pagesize).ToListAsync();
+            return _databaseService.GetLazyAllElements().Skip(pageNumber * pageSize).Take(pageSize).ToListAsync();
         }
 
 
         public Task<Element> Create(ElementViewModel newElement)
         {
-            var element = new Element { Title = newElement.Title };
+            if (_databaseService.GetElementByName(newElement.Title) != null)
+                return Task.FromResult<Element>(null);
+
+            var element = new Element
+            {
+                Title = newElement.Title,
+                Tags = newElement.Tags != null ? newElement.Tags.Select(x => new Tag { Name = x }).ToList() : null,
+                ImagePath = newElement.ImagePath,
+                Description = newElement.Description
+            };
+
             return _databaseService.AddElement(element);
         }
 
@@ -41,7 +50,10 @@ namespace ProjektWeb.Services
         }
         public async Task<Element> Update(ElementViewModel newElement)
         {
-            var element = new Element { Title = newElement.Title };
+            var element = _databaseService.GetElementByName(newElement.Title);
+            element.Description = newElement.Description;
+            element.Tags = newElement.Tags != null ? newElement.Tags.Select(x => new Tag { Name = x }).ToList() : null;
+            element.ImagePath = newElement.ImagePath;
             return await _databaseService.UpdateElement(element).FirstOrDefaultAsync();
         }
     }

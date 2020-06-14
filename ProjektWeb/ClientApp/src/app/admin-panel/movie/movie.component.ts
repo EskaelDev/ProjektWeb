@@ -1,19 +1,21 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {Movie} from '../../_models/movie';
 import {MatChipInputEvent} from '@angular/material';
 import {FormBuilder, Validators} from '@angular/forms';
 import {MovieService} from '../../_services/movie-service';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
+import {Tag} from '../../_models/tag';
+import {MovieReq} from '../../_models/movie-req';
+import {map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-add-movie',
   templateUrl: './movie.component.html',
   styleUrls: ['./movie.component.css']
 })
-export class MovieComponent implements OnInit{
+export class MovieComponent implements AfterViewInit {
 
-  @Input()
   movie: Movie;
   loading = false;
 
@@ -26,7 +28,7 @@ export class MovieComponent implements OnInit{
   removable = true;
   addOnBlur = true;
   separatorKeysCodes: number[] = [ENTER, COMMA];
-  tags: string[] = this.movie ? this.movie.tags : ['comedy'];
+  tags: Tag[] = [];
 
   createForm = this.fb.group({
     title: ['', Validators.required],
@@ -34,25 +36,33 @@ export class MovieComponent implements OnInit{
   });
 
   constructor(private fb: FormBuilder, private movieService: MovieService,
-              private router: Router) {}
+              private router: Router, private route: ActivatedRoute) {
+  }
 
   save() {
-    if (!this.movie) {
-      this.movie = new Movie();
-    }
-    this.movie.title = this.createForm.controls.title.value;
-    this.movie.description = this.createForm.controls.description.value;
-    this.movie.tags = this.tags;
+    const nMovie: MovieReq = new MovieReq(); // TODO temporary solution
+
+    nMovie.title = this.createForm.controls.title.value;
+    nMovie.description = this.createForm.controls.description.value;
+    nMovie.tags = this.tags.map(tag => tag.name);
 
     const data = new FormData();
-    data.append('uploadFile', this.movieFile, this.movie.title);
-    this.movieService.saveFile(data).subscribe(
-      path => {
-        this.movie.imagePath = path;
-        this.movieService.create(this.movie).subscribe(
-          movie => this.router.navigate(['/admin'])
-        );
-      });
+    data.append('uploadFile', this.movieFile, nMovie.title);
+
+    this.movieService.saveFile(data)
+      .subscribe(
+        result => {
+          nMovie.imagePath = result.path;
+          if (this.movie) {
+            this.movieService.update(nMovie, this.movie.id).subscribe(
+              movie => this.router.navigate(['/admin'])
+            );
+          } else {
+            this.movieService.create(nMovie).subscribe(
+              movie => this.router.navigate(['/admin'])
+            );
+          }
+        });
   }
 
   isFormValid() {
@@ -64,9 +74,12 @@ export class MovieComponent implements OnInit{
     const input = event.input;
     const value = event.value;
 
-    // Add our fruit
+    // Add our tag
     if ((value || '').trim()) {
-      this.tags.push(value.trim());
+      const nTag: Tag = {
+        name: value.trim()
+      };
+      this.tags.push(nTag);
     }
 
     // Reset the input value
@@ -75,7 +88,7 @@ export class MovieComponent implements OnInit{
     }
   }
 
-  remove(tag: string): void {
+  remove(tag: Tag): void {
     const index = this.tags.indexOf(tag);
 
     if (index >= 0) {
@@ -103,10 +116,14 @@ export class MovieComponent implements OnInit{
     };
   }
 
-  ngOnInit(): void {
-    if (this.movie)
-    {
-
-    }
+  ngAfterViewInit(): void {
+    this.route.params.pipe(map(p => p.movieId)).subscribe(id => {
+      this.movieService.findMovieById(id).subscribe(
+        movie => {
+          this.movie = movie;
+          this.tags = movie.tags;
+          this.imgURL = '~' + movie.imagePath;
+        }
+      ); });
   }
 }

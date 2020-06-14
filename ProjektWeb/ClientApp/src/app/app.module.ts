@@ -44,7 +44,7 @@ import { MovieComponent } from './admin-panel/movie/movie.component';
     AdminPanelComponent,
     HomeComponent,
     MoviePanelComponent,
-    MovieComponent,
+    MovieComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -55,6 +55,11 @@ import { MovieComponent } from './admin-panel/movie/movie.component';
       { path: 'login', component: LoginComponent, pathMatch: 'full' },
       { path: 'admin', component: AdminPanelComponent, canActivate: [AuthGuard], data: {roles: [Role.Admin]} },
       { path: 'movie', component: MovieComponent, canActivate: [AuthGuard], data: {roles: [Role.Admin]} },
+      {
+        path: 'movie/:movieId',
+        component: MovieComponent,
+        canActivate: [AuthGuard], data: {roles: [Role.Admin]}
+      },
       { path: 'home', redirectTo: '' },
 
       // otherwise redirect to home
@@ -83,9 +88,6 @@ import { MovieComponent } from './admin-panel/movie/movie.component';
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-
-    // provider used to create fake backend
-    // fakeBackendProvider
   ],
   bootstrap: [AppComponent],
   entryComponents: [DialogComponent]
