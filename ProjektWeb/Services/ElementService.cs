@@ -9,8 +9,7 @@ using System.Threading.Tasks;
 namespace ProjektWeb.Services
 {
     public class ElementService : IElementService
-    {
-        public int PageSize => 12;
+    {        
         private IDatabaseService _databaseService;
 
         public ElementService(IDatabaseService databaseService)
@@ -18,9 +17,10 @@ namespace ProjektWeb.Services
             _databaseService = databaseService;
         }
 
-        public Task<List<Element>> GetMany(int? pageNumber)
+        public Task<List<Element>> GetMany(int? pageNumber, int? pageSize)
         {
-            return _databaseService.GetLazyAllElements().Skip(pageNumber.GetValueOrDefault(0) * PageSize).Take(PageSize).ToListAsync();
+            int pagesize = pageSize.GetValueOrDefault(1);
+            return _databaseService.GetLazyAllElements().Skip(pageNumber.GetValueOrDefault(0) * pagesize).Take(pagesize).ToListAsync();
         }
 
 

@@ -25,12 +25,14 @@ namespace ProjektWeb.Controllers
         }
 
         [AllowAnonymous]
-        [HttpGet("all/{page}")]
-        public async Task<ActionResult<List<Element>>> GetAll(int? page)
+        [HttpGet("all/{page}/{pagesize}")]
+        public async Task<ActionResult<List<Element>>> GetAll(int? page, int? pagesize)
         {
             if (page == null)
                 page = 1;
-            var result = await _elementService.GetMany(page);
+            if (pagesize == null)
+                pagesize = 5;
+            var result = await _elementService.GetMany(page, pagesize);
             if (result.Count <= 0)
                 return NoContent();
             else
