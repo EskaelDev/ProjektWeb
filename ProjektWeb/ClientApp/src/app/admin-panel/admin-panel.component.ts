@@ -16,9 +16,9 @@ import {Router} from '@angular/router';
 export class AdminPanelComponent implements AfterViewInit  {
   displayedColumns: string[] = ['photo', 'title', 'description', 'edit', 'select'];
   movies: Movie[] = [{ title: 'Suits', description: 'On the run from a drug deal gone bad, brilliant college dropout Mike Ross, finds himself working with Harvey Specter, one of New York City\'s best lawyers.',
-    imagePath: 'https://www.multikurs.pl/uploads_public/cms/component-25162/suits-7591.jpg', tags: ['lawyers', 'comedy', 'suits']},
+    imagePath: 'https://www.multikurs.pl/uploads_public/cms/component-25162/suits-7591.jpg', tags: [{name: 'lawyers'}, {name: 'comedy'}, {name: 'suits'}]},
     { title: 'Suits2', description: 'On the run from a drug deal gone bad, brilliant college dropout Mike Ross, finds himself working with Harvey Specter, one of New York City\'s best lawyers.',
-      imagePath: 'https://www.multikurs.pl/uploads_public/cms/component-25162/suits-7591.jpg', tags: ['lawyers', 'comedy', 'suits']}];
+      imagePath: 'https://www.multikurs.pl/uploads_public/cms/component-25162/suits-7591.jpg', tags: [{name: 'lawyers'}, {name: 'comedy'}, {name: 'suits'}]}];
 
   dataSource: MatTableDataSource<Movie> = new MatTableDataSource([]);
   selection = new SelectionModel<Movie>(true, []);
