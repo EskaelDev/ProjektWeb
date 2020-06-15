@@ -59,6 +59,7 @@ namespace ProjektWeb
             // configure DI for application services
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IElementService, ElementService>();
+            services.AddScoped<IRateService, RateService>();
             services.AddScoped<IImageTransferService, ImageTransferService>();
 
             services.AddScoped<IDatabaseService, DatabaseService>();

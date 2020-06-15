@@ -73,9 +73,12 @@ namespace ProjektWeb.Services
 
         protected async Task<User> GetCurrentUser()
         {
-            var userId = int.Parse(_httpContextAccessor.HttpContext.User.Claims.Where(c => c.Type == System.Security.Claims.ClaimTypes.NameIdentifier).FirstOrDefault().Value);
-            return await GetById(userId);
+            return await GetById(GetCurrentUserId());
         }
 
+        public int GetCurrentUserId()
+        {
+            return int.Parse(_httpContextAccessor.HttpContext.User.Claims.Where(c => c.Type == System.Security.Claims.ClaimTypes.NameIdentifier).FirstOrDefault().Value);
+        }
     }
 }
