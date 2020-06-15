@@ -1,4 +1,4 @@
-import {Tag} from './tag';
+import {Tag} from '../_models/tag';
 
 export class Movie {
   id?: number;
@@ -6,4 +6,5 @@ export class Movie {
   description: string;
   imagePath: string;
   tags: Tag[];
+  score : number;
 }

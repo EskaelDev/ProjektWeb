@@ -13,7 +13,31 @@
     position: relative;
     margin-top: 10px;
 }
-.average{
+.average {
     background-color: blueviolet;
-    padding: 2px;
+    padding: 5px;
+    border-radius: 12px;
+}
+.animated {
+    -webkit-transition: height 0.2s;
+    -moz-transition: height 0.2s;
+    transition: height 0.2s;
+}
+
+.stars {
+    margin: 20px 0;
+    font-size: 24px;
+    color: #d17581;
+}
+
+#h1,
+#h2,
+#h3,
+#h4,
+#h5 {
+    outline: none;
+}
+
+.rate {
+    width: -webkit-fill-available;
 }

@@ -59,7 +59,7 @@ namespace ProjektWeb.Services
         }
         public async Task<Element> Update(ElementViewModel newElement)
         {
-            var element = _databaseService.GetElementByName(newElement.Title);
+            var element = _databaseService.GetElementById(newElement.Id).FirstOrDefault();
             element.Description = newElement.Description;
             element.Tags = newElement.Tags != null ? newElement.Tags.Select(x => new Tag { Name = x }).ToList() : null;
             element.ImagePath = newElement.ImagePath;

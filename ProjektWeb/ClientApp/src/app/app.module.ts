@@ -12,7 +12,9 @@ import {
   MatChipsModule,
   MatDialogModule,
   MatGridListModule,
-  MatTableModule
+  MatTableModule,
+  MatFormFieldModule,
+  MatProgressBarModule
 } from '@angular/material';
 import { MainNavComponent } from './main-nav/main-nav.component';
 import { LayoutModule } from '@angular/cdk/layout';
@@ -23,17 +25,19 @@ import { MatListModule } from '@angular/material/list';
 import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material';
 import { LoginComponent } from './login/login.component';
-import {ReactiveFormsModule} from '@angular/forms';
-import {ErrorInterceptor} from './_helpers/error-interceptor';
-import {JwtInterceptor} from './_helpers/jwt-interceptor';
-import {AuthGuard} from './_helpers/auth.guard';
+import { ReactiveFormsModule } from '@angular/forms';
+import { ErrorInterceptor } from './_helpers/error-interceptor';
+import { JwtInterceptor } from './_helpers/jwt-interceptor';
+import { AuthGuard } from './_helpers/auth.guard';
 import { DialogComponent } from './dialog/dialog.component';
 import { AdminPanelComponent } from './admin-panel/admin-panel.component';
 import { Role } from './_models/role';
 import { HomeComponent } from './home/home.component';
 import { MoviePanelComponent } from './home/movie-panel/movie-panel.component';
-import { MatPaginatorModule, MatSortModule, MatProgressSpinnerModule} from '@angular/material';
+import { MatPaginatorModule, MatSortModule, MatProgressSpinnerModule } from '@angular/material';
 import { MovieComponent } from './admin-panel/movie/movie.component';
+import { RatesComponent } from './rates/rates.component';
+import { RateComponent } from './rate/rate.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +48,9 @@ import { MovieComponent } from './admin-panel/movie/movie.component';
     AdminPanelComponent,
     HomeComponent,
     MoviePanelComponent,
-    MovieComponent
+    MovieComponent,
+    RatesComponent,
+    RateComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -53,13 +59,13 @@ import { MovieComponent } from './admin-panel/movie/movie.component';
     RouterModule.forRoot([
       { path: '', component: HomeComponent, canActivate: [AuthGuard] },
       { path: 'login', component: LoginComponent, pathMatch: 'full' },
-      { path: 'admin', component: AdminPanelComponent, canActivate: [AuthGuard], data: {roles: [Role.Admin]} },
-      { path: 'movie', component: MovieComponent, canActivate: [AuthGuard], data: {roles: [Role.Admin]} },
+      { path: 'admin', component: AdminPanelComponent, canActivate: [AuthGuard], data: { roles: [Role.Admin] } },
+      { path: 'movie', component: MovieComponent, canActivate: [AuthGuard], data: { roles: [Role.Admin] } },
       {
         path: 'movie/:movieId',
         component: MovieComponent,
-        canActivate: [AuthGuard], data: {roles: [Role.Admin]}
-        },
+        canActivate: [AuthGuard], data: { roles: [Role.Admin] }
+      },
       { path: 'rate/:id', component: RatesComponent },
       { path: 'home', redirectTo: '' },
 

@@ -1,3 +1,17 @@
-<div>
-    Name
-</div>
+<!-- <div>
+    <div>{{rate.authorName}}{{rate.score}}</div>
+    <div>{{rate.comment}}</div>
+
+</div> -->
+<ng-container class="container">
+    <div>
+        <div>
+            <div class="d-inline">{{rate.authorName}}A</div>
+            <div class="float-right d-inline score"> {{rate.score}}</div>
+        </div>
+        <div class="mt-3">
+            {{rate.comment}}
+        </div>
+
+    </div>
+</ng-container>

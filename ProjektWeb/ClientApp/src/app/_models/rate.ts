@@ -1,4 +1,8 @@
 export class Rate {
-  number: number;
-  content: string;
+    score: number;
+    comment: string;
+    elementId: number;
+    rateId: number;
+    author: number;
+    authorName: number;
 }

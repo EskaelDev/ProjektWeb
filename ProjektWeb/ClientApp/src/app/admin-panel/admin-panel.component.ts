@@ -1,39 +1,38 @@
-import {AfterViewInit, Component, ViewChild} from '@angular/core';
-import {MatDialog, MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
-import {merge, of as observableOf} from 'rxjs';
-import {catchError, map, startWith, switchMap} from 'rxjs/operators';
-import {Movie} from '../_models/movie';
-import {MovieService} from '../_services/movie-service';
-import {SelectionModel} from '@angular/cdk/collections';
-import {DialogComponent} from '../dialog/dialog.component';
-import {Router} from '@angular/router';
-import {environment} from '../../environments/environment';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { MatDialog, MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
+import { merge, of as observableOf } from 'rxjs';
+import { catchError, map, startWith, switchMap } from 'rxjs/operators';
+import { Movie } from '../_models/movie';
+import { MovieService } from '../_services/movie-service';
+import { SelectionModel } from '@angular/cdk/collections';
+import { DialogComponent } from '../dialog/dialog.component';
+import { Router } from '@angular/router';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-admin-panel',
   templateUrl: './admin-panel.component.html',
   styleUrls: ['./admin-panel.component.css']
 })
-export class AdminPanelComponent implements AfterViewInit  {
+export class AdminPanelComponent implements AfterViewInit {
   displayedColumns: string[] = ['photo', 'title', 'description', 'edit', 'select'];
   dataSource: MatTableDataSource<Movie> = new MatTableDataSource([]);
   selection = new SelectionModel<Movie>(true, []);
 
   resultsLength = 0;
   isLoadingResults = false;
+
   env = environment;
 
-  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
-  @ViewChild(MatSort, {static: true}) sort: MatSort;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
 
-  constructor(private movieService: MovieService, private dialog: MatDialog,
-              private router: Router) {
-  }
+  constructor(private movieService: MovieService, private dialog: MatDialog, private router: Router) { }
 
   ngAfterViewInit() {
     // If the user changes the sort order, reset back to the first page.
     this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
-
+    
     merge(this.sort.sortChange, this.paginator.page)
       .pipe(
         startWith({}),
@@ -54,7 +53,7 @@ export class AdminPanelComponent implements AfterViewInit  {
       ).subscribe(data => {
         this.dataSource = new MatTableDataSource(data);
         this.dataSource.sort = this.sort;
-    });
+      });
   }
 
   isAllSelected() {
@@ -94,14 +93,15 @@ export class AdminPanelComponent implements AfterViewInit  {
   onDeleteClicked() {
     // TODO this.openDialog('Are you sure to delete this movies?');
     this.selection.selected.forEach(item => {
-      this.movieService.delete(item.id).subscribe( data => {
-      const index: number = this.dataSource.data.findIndex(d => d === item);
-      console.log(this.dataSource.data.findIndex(d => d === item));
-      this.dataSource.data.splice(index, 1);
-      this.dataSource = new MatTableDataSource<Movie>(this.dataSource.data);
-      this.dataSource.sort = this.sort;
-      this.resultsLength -= 1;
-    }); });
+      this.movieService.delete(item.id).subscribe(data => {
+        const index: number = this.dataSource.data.findIndex(d => d === item);
+        console.log(this.dataSource.data.findIndex(d => d === item));
+        this.dataSource.data.splice(index, 1);
+        this.dataSource = new MatTableDataSource<Movie>(this.dataSource.data);
+        this.dataSource.sort = this.sort;
+        this.resultsLength -= 1;
+      });
+    });
     this.selection.clear();
   }
 
@@ -113,7 +113,7 @@ export class AdminPanelComponent implements AfterViewInit  {
     this.dialog.open(DialogComponent, {
       width: '30%',
       minHeight: '200px',
-      data: {title: 'Attention', content: errorMsg, isDecisionDialog: true}
+      data: { title: 'Attention', content: errorMsg, isDecisionDialog: true }
     });
   }
 }

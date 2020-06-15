@@ -33,7 +33,7 @@ namespace ProjektWeb.Services
 
         public IQueryable<Element> GetElementById(int id)
         {
-            return databaseContext.Elements.Where(x => x.Id == id);
+            return databaseContext.Elements.Where(x => x.Id == id && !x.IsDeleted);
         }
 
         public Element GetElementByName(string title)
