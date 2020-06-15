@@ -80,7 +80,7 @@ namespace ProjektWeb.Services
                 foreach(Rate rate in oldRates)
                 {
                     rate.IsDeleted = true;
-                    _databaseService.UpdateRate(rate);
+                    await _databaseService.UpdateRate(rate);
                 }
 
                 element.Description = newElement.Description;
