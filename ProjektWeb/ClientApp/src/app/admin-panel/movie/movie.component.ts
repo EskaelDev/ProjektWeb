@@ -41,7 +41,7 @@ export class MovieComponent implements AfterViewInit {
   }
 
   save() {
-    const nMovie: MovieReq = new MovieReq(); // TODO temporary solution
+    const nMovie: MovieReq = new MovieReq(); 
 
     nMovie.title = this.createForm.controls.title.value;
     nMovie.description = this.createForm.controls.description.value;

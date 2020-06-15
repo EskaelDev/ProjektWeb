@@ -56,7 +56,7 @@ namespace ProjektWeb.Services
 
         public async Task<Element> Get(int id)
         {
-            var element = _databaseService.GetElementById(id).FirstOrDefault();
+            var element = await _databaseService.GetElementById(id).FirstOrDefaultAsync();
             if (element != null)
                 element.Tags = _databaseService.GetTagsByElementId(element.Id).ToList();
             return element;
