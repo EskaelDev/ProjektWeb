@@ -41,7 +41,7 @@ export class MovieComponent implements AfterViewInit {
   }
 
   save() {
-    const nMovie: MovieReq = new MovieReq(); 
+    const nMovie: MovieReq = new MovieReq();
 
     nMovie.title = this.createForm.controls.title.value;
     nMovie.description = this.createForm.controls.description.value;
@@ -74,7 +74,13 @@ export class MovieComponent implements AfterViewInit {
   }
 
   isFormValid() {
-    return this.createForm.controls.title.valid && this.createForm.controls.description.valid && (this.movie || this.movieFile);
+    if (!this.movie) {
+      return this.createForm.controls.title.valid && this.createForm.controls.description.valid && this.movieFile;
+    } else {
+      return this.movie.title !== this.createForm.controls.title.value && this.createForm.controls.title.valid ||
+        this.movie.description !== this.createForm.controls.description.value && this.createForm.controls.description.valid ||
+        this.movieFile;
+    }
   }
 
   add(event: MatChipInputEvent): void {
