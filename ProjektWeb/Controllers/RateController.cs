@@ -25,12 +25,21 @@ namespace ProjektWeb.Controllers
         [HttpPost("add")]
         public async Task<ActionResult<Rate>> Post([FromBody] RateViewModel newRate)
         {
-            var result = await _rateService.Create(newRate);
+            if (newRate != null) { 
+                var result = await _rateService.Create(newRate);
 
-            if (result == null)
-                return StatusCode(409, $"Rate for this element already exists.");
+                if (result == null)
+                {
+                    result = await _rateService.Update(newRate);
+                    if (result != null)
+                        return Ok(result);
+                }
+                else { 
+                    return Ok(result);
+                }
+            }
 
-            return Ok(result);
+            return StatusCode(409, $"Rate for this element already exists.");
         }
 
         [HttpGet("{id}")]
