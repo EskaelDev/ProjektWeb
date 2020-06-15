@@ -30,6 +30,7 @@ export class MovieService {
   }
 
   update(movie: MovieReq, movieId: number) {
+    movie.id = movieId
     return this.http.put<Movie>(`${this.controllerUrl}${movieId}`, movie);
   }
 

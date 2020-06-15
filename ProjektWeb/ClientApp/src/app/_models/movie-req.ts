@@ -3,4 +3,6 @@ export class MovieReq {
   description: string;
   imagePath: string;
   tags: string[];
+
+  id:number;
 }

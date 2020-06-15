@@ -43,7 +43,7 @@ namespace ProjektWeb.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<List<Element>>> Get(int? id)
+        public async Task<ActionResult<List<Rate>>> Get(int? id)
         {
             if (id.HasValue)
             {
@@ -68,7 +68,7 @@ namespace ProjektWeb.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<List<Element>>> Put(RateViewModel rateViewModel)
+        public async Task<ActionResult<List<Rate>>> Put(RateViewModel rateViewModel)
         {
             if (rateViewModel != null)
             {

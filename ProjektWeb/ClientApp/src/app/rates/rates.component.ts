@@ -19,6 +19,7 @@ export class RatesComponent implements OnInit {
     rates: Array<Rate>;
     stars: Array<any>;
 
+    movieId: number
     userRate: Rate;
     @ViewChild('hearts', { static: false }) hearts: ElementRef;
     public readonly testImgUrl: String = `${environment.apiUrl}\\wwwroot\\elements\\IMG_20200524_114301.jpg`;
@@ -29,8 +30,8 @@ export class RatesComponent implements OnInit {
     }
 
     ngOnInit() {
-        const movieId = parseInt(this.activatedRoute.snapshot.paramMap.get('id'));
-        this.fetchModel(movieId);
+        this.movieId = parseInt(this.activatedRoute.snapshot.paramMap.get('id'));
+        this.fetchModel(this.movieId);
         console.log(this.hearts);
     }
     setStarsId(): void {
@@ -76,7 +77,7 @@ export class RatesComponent implements OnInit {
     sendRate() {
         this.rateService.sendRate(this.userRate).subscribe(
             result => {
-                this.rates.push(result)
+                this.fetchModel(this.movieId)
             },
             error =>
                 console.error(error)
