@@ -5,6 +5,7 @@ using ProjektWeb.Data.Models.Database;
 using ProjektWeb.Services;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -16,24 +17,25 @@ namespace ProjektWeb.Controllers
     public class ElementController : BaseController
     {
         private IElementService _elementService;
+        private IRateService _rateService;
         private IImageTransferService _imageService;
-        public ElementController(IUserService userService, IHttpContextAccessor httpContextAccessor, IElementService elementService, IImageTransferService imageTransferService) : base(userService, httpContextAccessor)
+        public ElementController(IUserService userService, IHttpContextAccessor httpContextAccessor, IElementService elementService, IRateService rateService, IImageTransferService imageTransferService) : base(userService, httpContextAccessor)
         {
             _elementService = elementService;
             _imageService = imageTransferService;
+            _rateService = rateService;
         }
 
         [AllowAnonymous]
-        [HttpGet("all/{page}")]
-        public async Task<ActionResult<List<Element>>> GetAll(int? page)
+        [HttpGet("all/{page}/{pagesize}")]
+        public async Task<ActionResult<List<Object>>> GetAll(int? page, int? pagesize)
         {
-            if (page == null)
-                page = 1;
-            var result = await _elementService.GetMany(page);
+            var result = await _elementService.GetMany(page.GetValueOrDefault(1), pagesize.GetValueOrDefault(5));
+            var count = await _elementService.GetCount();
             if (result.Count <= 0)
                 return NoContent();
             else
-                return Ok(result);
+                return Ok(new { movies = result, count = count });
         }
 
         [HttpPost("save")]
@@ -58,6 +60,26 @@ namespace ProjektWeb.Controllers
                 var result = await _elementService.Get(id.Value);
                 if (result != null)
                     return Ok(result);
+            }
+            return NoContent();
+        }
+
+        [HttpGet("{id}/details")]
+        public async Task<ActionResult<List<Element>>> GetDetails(int? id)
+        {
+            if (id.HasValue)
+            {
+                var result = await _elementService.Get(id.Value);
+                if (result != null)
+                {
+
+                    var retObj = new
+                    {
+                        Element = result,
+                        Rates = await _rateService.GetAllRates(id.Value)
+                    };
+                    return Ok(retObj);
+                }
             }
             return NoContent();
         }
@@ -93,10 +115,11 @@ namespace ProjektWeb.Controllers
             return NoContent();
         }
 
-        [HttpPost]
-        public async Task UploadFile()
+        [HttpPost("uploadfile")]
+        public async Task<ActionResult<string>> UploadFile()
         {
-            await _imageService.SaveFile(HttpContext.Request.Form);
+            var result = new { path = await _imageService.SaveFile(HttpContext.Request.Form) };
+            return Ok(result);
         }
     }
 }

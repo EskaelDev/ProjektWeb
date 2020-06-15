@@ -13,6 +13,8 @@ using ProjektWeb.Services;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.AspNetCore.Http.Features;
+using System;
 
 namespace ProjektWeb
 {
@@ -57,6 +59,7 @@ namespace ProjektWeb
             // configure DI for application services
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IElementService, ElementService>();
+            services.AddScoped<IRateService, RateService>();
             services.AddScoped<IImageTransferService, ImageTransferService>();
 
             services.AddScoped<IDatabaseService, DatabaseService>();
@@ -69,6 +72,10 @@ namespace ProjektWeb
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp/dist";
+            });
+            services.Configure<FormOptions>(options =>
+            {
+                options.MemoryBufferThreshold = Int32.MaxValue;
             });
         }
 
@@ -96,6 +103,7 @@ namespace ProjektWeb
             app.UseStaticFiles();
             app.UseStaticFiles(new StaticFileOptions()
             {
+                ServeUnknownFileTypes = true,
                 FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot")),
                 RequestPath = new PathString("/wwwroot")
             });

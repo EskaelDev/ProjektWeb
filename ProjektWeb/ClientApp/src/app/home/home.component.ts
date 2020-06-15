@@ -14,10 +14,10 @@ export class HomeComponent implements OnInit {
 
   constructor(private movieService: MovieService, private dialog: MatDialog) {
     this.movies = new Array<Movie>();
-    movieService.getAll(0).subscribe(
+    movieService.getAll(0, 10).subscribe(
       data => {
-        if (data.length > 0) {
-          data.forEach(element => {
+        if (data.movies && data.movies.length > 0) {
+          data.movies.forEach(element => {
             this.movies.push(element);
           });
         }

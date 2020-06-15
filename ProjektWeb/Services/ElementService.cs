@@ -11,15 +11,17 @@ namespace ProjektWeb.Services
     public class ElementService : IElementService
     {
         private IDatabaseService _databaseService;
-
+ 
         public ElementService(IDatabaseService databaseService)
         {
             _databaseService = databaseService;
         }
-
+ 
         public Task<List<Element>> GetMany(int pageNumber, int pageSize)
         {
-            return _databaseService.GetLazyAllElements().Skip(pageNumber * pageSize).Take(pageSize).ToListAsync();
+            var elemList = _databaseService.GetLazyAllElements().Skip(pageNumber * pageSize).Take(pageSize).ToList();
+            elemList.ForEach(elem => _databaseService.GetTagsByElementId(elem.Id).ToList());
+            return Task.FromResult(elemList);
         }
 
 
@@ -28,13 +30,27 @@ namespace ProjektWeb.Services
             if (_databaseService.GetElementByName(newElement.Title) != null)
                 return Task.FromResult<Element>(null);
 
-            var element = CreateElementFromElementViewModel(newElement);
+            var element = new Element
+            {
+                Title = newElement.Title,
+                Tags = newElement.Tags != null ? newElement.Tags.Select(x => new Tag { Name = x }).ToList() : null,
+                ImagePath = newElement.ImagePath,
+                Description = newElement.Description
+            };
+
             return _databaseService.AddElement(element);
         }
 
         public async Task<Element> Get(int id)
         {
-            return await _databaseService.GetElementById(id).FirstOrDefaultAsync();
+            var element = _databaseService.GetElementById(id).FirstOrDefault();
+            if (element != null)
+                element.Tags = _databaseService.GetTagsByElementId(element.Id).ToList();
+            return element;
+        }
+        public async Task<int> GetCount()
+        {
+            return await _databaseService.GetElementCount();
         }
 
         public async Task<bool> Delete(int id)
@@ -43,18 +59,11 @@ namespace ProjektWeb.Services
         }
         public async Task<Element> Update(ElementViewModel newElement)
         {
-            var element = CreateElementFromElementViewModel(newElement);
+            var element = _databaseService.GetElementByName(newElement.Title);
+            element.Description = newElement.Description;
+            element.Tags = newElement.Tags != null ? newElement.Tags.Select(x => new Tag { Name = x }).ToList() : null;
+            element.ImagePath = newElement.ImagePath;
             return await _databaseService.UpdateElement(element).FirstOrDefaultAsync();
-        }
-
-        private Element CreateElementFromElementViewModel(ElementViewModel newElement)
-        {
-            return new Element
-            {
-                Title = newElement.Title,
-                Tags = newElement.Tags != null ? newElement.Tags.Select(x => new Tag { Name = x }).ToList() : null,
-                ImagePath = null
-            };
         }
     }
 }

@@ -1,7 +1,9 @@
+import {Tag} from './tag';
+
 export class Movie {
-    title: string;
-    description: string;
-    imagePath: string;
-    tags: string[];
-    id: number;
+  id?: number;
+  title: string;
+  description: string;
+  imagePath: string;
+  tags: Tag[];
 }

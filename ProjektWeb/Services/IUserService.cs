@@ -15,5 +15,6 @@ namespace ProjektWeb.Services
         Task<User> GetById(int id);
 
         bool IsAdmin();
+        int GetCurrentUserId();
     }
 }
