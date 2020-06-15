@@ -86,9 +86,9 @@ namespace ProjektWeb.Services
             return databaseContext.Rates.ToList();
         }
 
-        public IEnumerable<Rate> GetRatesByAuthor(string author)
+        public IEnumerable<Rate> GetRatesByAuthor(int author)
         {
-            return databaseContext.Rates.Where(x => x.Author.ToUpper() == author.ToUpper() && !x.IsDeleted).ToList();
+            return databaseContext.Rates.Where(x => x.Author == author && !x.IsDeleted).ToList();
         }
 
         public IEnumerable<Rate> GetRatesByElementId(int elementId)
@@ -170,5 +170,18 @@ namespace ProjektWeb.Services
             return databaseContext.Elements.Where(e => e.Id == element.Id);
         }
 
+        public Task<Rate> AddRate(Rate rate)
+        {
+            databaseContext.Add(rate);
+            databaseContext.SaveChanges();
+            return Task.FromResult(GetRatesByAuthor(rate.Author).Where(x => x.ElementId == rate.ElementId && x.IsDeleted == false).FirstOrDefault());
+        }
+
+        public Task<Rate> UpdateRate(Rate rate)
+        {
+            databaseContext.Rates.Update(rate);
+            databaseContext.SaveChanges();
+            return Task.FromResult(GetRatesByAuthor(rate.Author).Where(x => x.ElementId == rate.ElementId && x.IsDeleted == false).FirstOrDefault());
+        }
     }
 }

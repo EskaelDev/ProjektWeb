@@ -16,11 +16,13 @@ namespace ProjektWeb.Controllers
     public class ElementController : BaseController
     {
         private IElementService _elementService;
+        private IRateService _rateService;
         private IImageTransferService _imageService;
-        public ElementController(IUserService userService, IHttpContextAccessor httpContextAccessor, IElementService elementService, IImageTransferService imageTransferService) : base(userService, httpContextAccessor)
+        public ElementController(IUserService userService, IHttpContextAccessor httpContextAccessor, IElementService elementService, IRateService rateService, IImageTransferService imageTransferService) : base(userService, httpContextAccessor)
         {
             _elementService = elementService;
             _imageService = imageTransferService;
+            _rateService = rateService;
         }
 
         [AllowAnonymous]
@@ -58,6 +60,26 @@ namespace ProjektWeb.Controllers
                 var result = await _elementService.Get(id.Value);
                 if (result != null)
                     return Ok(result);
+            }
+            return NoContent();
+        }
+
+        [HttpGet("{id}/details")]
+        public async Task<ActionResult<List<Element>>> GetDetails(int? id)
+        {
+            if (id.HasValue)
+            {
+                var result = await _elementService.Get(id.Value);
+                if (result != null)
+                {
+
+                    var retObj = new
+                    {
+                        Element = result,
+                        Rates = await _rateService.GetAllRates(id.Value)
+                    };
+                    return Ok(retObj);
+                }
             }
             return NoContent();
         }

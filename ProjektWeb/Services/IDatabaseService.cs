@@ -16,7 +16,7 @@ namespace ProjektWeb.Services
         IEnumerable<Element> GetElementsContainingTag(string tag);
 
         IEnumerable<Rate> GetAllRates();
-        IEnumerable<Rate> GetRatesByAuthor(string author);
+        IEnumerable<Rate> GetRatesByAuthor(int author);
 
         IEnumerable<string> GetAllTags();
 
@@ -42,5 +42,7 @@ namespace ProjektWeb.Services
 
         IQueryable<Element> UpdateElement(Element element);
 
+        Task<Rate> AddRate(Rate rate);
+        Task<Rate> UpdateRate(Rate rate);
     }
 }

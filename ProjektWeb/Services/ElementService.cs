@@ -20,7 +20,9 @@ namespace ProjektWeb.Services
 
         public Task<List<Element>> GetMany(int? pageNumber)
         {
-            return _databaseService.GetLazyAllElements().Skip(pageNumber.GetValueOrDefault(0) * PageSize).Take(PageSize).ToListAsync();
+            var elemList = _databaseService.GetLazyAllElements().Skip(pageNumber.GetValueOrDefault(0) * PageSize).Take(PageSize).ToList();
+            elemList.ForEach(elem => _databaseService.GetTagsByElementId(elem.Id).ToList());
+            return Task.FromResult(elemList);
         }
 
 
@@ -42,7 +44,10 @@ namespace ProjektWeb.Services
 
         public async Task<Element> Get(int id)
         {
-            return await _databaseService.GetElementById(id).FirstOrDefaultAsync();
+            var element = _databaseService.GetElementById(id).FirstOrDefault();
+            if (element != null)
+                element.Tags = _databaseService.GetTagsByElementId(element.Id).ToList();
+            return element;
         }
 
         public async Task<bool> Delete(int id)
