@@ -53,14 +53,15 @@ namespace ProjektWeb.Services
 
         public async Task<string> SaveFile(IFormCollection httpRequest)
         {
-            try
-            {
-                return await SaveFileOnDisk(GetFileFromHeader(httpRequest));
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
+            if (httpRequest.Files.Count > 0)
+                try
+                {
+                    return await SaveFileOnDisk(GetFileFromHeader(httpRequest));
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
             return null;
         }
 
