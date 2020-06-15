@@ -7,7 +7,7 @@
   <img mat-card-image [src]="env.staticFilesUrl + movie.imagePath" alt="Photo of movie">
   <mat-card-actions>
     <mat-chip-list>
-      <mat-chip *ngFor="let tag of movie.tags" color="primary"> {{ tag }} </mat-chip>
+      <mat-chip *ngFor="let tag of movie.tags" color="primary"> {{ tag.name }} </mat-chip>
     </mat-chip-list>
   </mat-card-actions>
 </mat-card>

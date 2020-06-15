@@ -52,7 +52,7 @@
               [disabled]="!isFormValid()">
                     <span *ngIf="loading"
                           class="spinner-border spinner-border-sm mr-1"></span>
-        CREATE
+        {{movie ? 'UPDATE' : 'CREATE'}}
       </button>
     </mat-card-actions>
   </form>

@@ -4,7 +4,6 @@ import {Injectable} from '@angular/core';
 import {Movie} from '../_models/movie';
 import {PathResult} from '../_models/path-result';
 import {MovieReq} from '../_models/movie-req';
-import {MoviesCount} from '../_models/movies-count';
 // @ts-ignore
 import {MovieApi} from '../_models/movie-api';
 
@@ -15,10 +14,6 @@ export class MovieService {
 
   getAll(page: number, pageSize: number) {
     return this.http.get<MovieApi>(`${this.controllerUrl}all/${page}/${pageSize}`);
-  }
-
-  getCount() {
-    return this.http.get<MoviesCount>(`${this.controllerUrl}count`);
   }
 
   getSeveral(count: number) {

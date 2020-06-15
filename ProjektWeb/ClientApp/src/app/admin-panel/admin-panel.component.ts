@@ -2,12 +2,12 @@ import {AfterViewInit, Component, ViewChild} from '@angular/core';
 import {MatDialog, MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
 import {merge, of as observableOf} from 'rxjs';
 import {catchError, map, startWith, switchMap} from 'rxjs/operators';
-import {Movie} from '../_models/movie';
 import {MovieService} from '../_services/movie-service';
 import {SelectionModel} from '@angular/cdk/collections';
 import {DialogComponent} from '../dialog/dialog.component';
 import {Router} from '@angular/router';
 import {environment} from '../../environments/environment';
+import {Movie} from '../_models/movie';
 
 @Component({
   selector: 'app-admin-panel',

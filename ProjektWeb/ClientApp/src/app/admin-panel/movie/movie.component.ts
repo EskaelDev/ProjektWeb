@@ -29,11 +29,11 @@ export class MovieComponent implements AfterViewInit {
   removable = true;
   addOnBlur = true;
   separatorKeysCodes: number[] = [ENTER, COMMA];
-  tags: Tag[] = [];
+  tags: Tag[] = this.movie && this.movie.tags ? this.movie.tags : [];
 
   createForm = this.fb.group({
-    title: ['', Validators.required],
-    description: ['', Validators.required]
+    title: [this.movie ? this.movie.title : '', Validators.required],
+    description: [this.movie ? this.movie.description : '', Validators.required]
   });
 
   constructor(private fb: FormBuilder, private movieService: MovieService,
@@ -47,28 +47,34 @@ export class MovieComponent implements AfterViewInit {
     nMovie.description = this.createForm.controls.description.value;
     nMovie.tags = this.tags.map(tag => tag.name);
 
-    const data = new FormData();
-    data.append('uploadFile', this.movieFile, nMovie.title);
+    if (this.movieFile) {
+      const data = new FormData();
+      data.append('uploadFile', this.movieFile, nMovie.title);
 
-    this.movieService.saveFile(data)
-      .subscribe(
-        result => {
-          nMovie.imagePath = result.path;
-          if (this.movie) {
-            this.movieService.update(nMovie, this.movie.id).subscribe(
-              movie => this.router.navigate(['/admin'])
-            );
-          } else {
-            this.movieService.create(nMovie).subscribe(
-              movie => this.router.navigate(['/admin'])
-            );
-          }
-        });
+      this.movieService.saveFile(data)
+        .subscribe(
+          result => {
+            nMovie.imagePath = result.path;
+            if (this.movie) {
+              this.movieService.update(nMovie, this.movie.id).subscribe(
+                movie => this.router.navigate(['/admin'])
+              );
+            } else {
+              this.movieService.create(nMovie).subscribe(
+                movie => this.router.navigate(['/admin'])
+              );
+            }
+          });
+    } else {
+      nMovie.imagePath = this.movie.imagePath;
+      this.movieService.update(nMovie, this.movie.id).subscribe(
+        movie => this.router.navigate(['/admin'])
+      );
+    }
   }
 
   isFormValid() {
-    return this.createForm.controls.title.valid && this.createForm.controls.description.valid &&
-      this.movieFile;
+    return this.createForm.controls.title.valid && this.createForm.controls.description.valid && (this.movie || this.movieFile);
   }
 
   add(event: MatChipInputEvent): void {
