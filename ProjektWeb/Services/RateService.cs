@@ -19,13 +19,31 @@ namespace ProjektWeb.Services
 
         public Task<Rate> Create(RateViewModel newRate)
         {
+            if (_databaseService.GetElementById(newRate.ElementId).FirstOrDefault() == null)
+            {
+                return Task.FromResult<Rate>(null);
+            }
+
             Rate checkedRate = GetRateByElementId(newRate.ElementId);
             if (checkedRate != null)
-                return Task.FromResult<Rate>(null);
+            {
+                if (checkedRate.IsDeleted)
+                {
+                    checkedRate.IsDeleted = false;
+                    checkedRate.Comment = newRate.Comment;
+                    checkedRate.Score = CheckScore(newRate.Score);
+                    return _databaseService.UpdateRate(checkedRate);
+                }
+                else
+                {
+                    return Task.FromResult<Rate>(null);
+                }
+            }
 
             var rate = new Rate
             {
                 Author = _userService.GetCurrentUserId(),
+                AuthorName = _userService.GetById(_userService.GetCurrentUserId()).Result.Name,
                 ElementId = newRate.ElementId,
                 Comment = newRate.Comment,
                 Score = CheckScore(newRate.Score)
@@ -38,11 +56,11 @@ namespace ProjektWeb.Services
         {
             var rate = GetRateByElementId(elementId);
             if (rate == null)
-                Task.FromResult<Rate>(null);
+                return Task.FromResult<Rate>(null);
 
             rate.IsDeleted = true;
-
-            return _databaseService.UpdateRate(rate);
+            _databaseService.UpdateRate(rate);
+            return Task.FromResult(rate);
         }
 
         public Task<Rate> Get(int elementId)

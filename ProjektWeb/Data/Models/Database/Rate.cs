@@ -17,6 +17,7 @@ namespace ProjektWeb.Data.Models.Database
         public int RateId { get; set; }
         [Required]
         public int Author { get; set; }
+        public string AuthorName { get; set; }
         [Required]
         public int Score { get; set; }
         public string Comment { get; set; }
