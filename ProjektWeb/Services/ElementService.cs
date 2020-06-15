@@ -27,8 +27,21 @@ namespace ProjektWeb.Services
 
         public Task<Element> Create(ElementViewModel newElement)
         {
-            if (_databaseService.GetElementByName(newElement.Title) != null)
-                return Task.FromResult<Element>(null);
+            var checkedElement = _databaseService.GetElementByName(newElement.Title);
+            if (checkedElement != null)
+            {
+                if(checkedElement.IsDeleted)
+                {
+                    checkedElement.Description = newElement.Description;
+                    checkedElement.Tags = newElement.Tags != null ? newElement.Tags.Select(x => new Tag { Name = x }).ToList() : null;
+                    checkedElement.ImagePath = newElement.ImagePath;
+                    checkedElement.IsDeleted = false;
+                    return _databaseService.UpdateElement(checkedElement).FirstOrDefaultAsync();
+                } else
+                {
+                    return Task.FromResult<Element>(null);
+                }
+            }
 
             var element = new Element
             {
