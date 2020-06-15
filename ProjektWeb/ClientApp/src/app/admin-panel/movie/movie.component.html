@@ -1,0 +1,59 @@
+<mat-card class="create-card">
+  <form [formGroup]="createForm"
+        (ngSubmit)="save()">
+    <mat-card-header>
+      <mat-card-title><button mat-icon-button color="primary" routerLink="/admin">
+        <mat-icon>arrow_back</mat-icon>
+      </button>New Movie</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-form-field appearance="fill">
+        <mat-label>Enter title</mat-label>
+        <input matInput
+               placeholder="Suits"
+               formControlName="title" type="text" [value]="movie?.title"/>
+      </mat-form-field>
+      <br>
+      <mat-form-field appearance="fill">
+        <mat-label>Enter description</mat-label>
+        <textarea class="description" matInput placeholder="The film describe a situation ..."
+                  formControlName="description" [value]="movie?.description"></textarea>
+      </mat-form-field>
+      <br>
+      <label for="file">Choose photo</label><br>
+      <div class="container text-center">
+      <input #file type="file" accept='image/*' (change)="preview(file.files)" id="file"/>
+      <img [src]="imgURL" height="200" *ngIf="imgURL">
+      </div>
+      <br><br>
+      <mat-form-field class="example-chip-list">
+        <mat-chip-list #chipList aria-label="Tag selection">
+          <mat-chip *ngFor="let tag of tags" [selectable]="selectable"
+                    [removable]="removable" (removed)="remove(tag)">
+            {{tag.name}}
+            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+          </mat-chip>
+          <input placeholder="New tag..."
+                 [matChipInputFor]="chipList"
+                 [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                 [matChipInputAddOnBlur]="addOnBlur"
+                 (matChipInputTokenEnd)="add($event)">
+        </mat-chip-list>
+      </mat-form-field>
+      <br>
+    </mat-card-content>
+    <mat-card-actions align="end"
+                      class="create-actions">
+      <div class="spacer"></div>
+      <button type="submit"
+              mat-raised-button
+              color="primary"
+              mat-button
+              [disabled]="!isFormValid()">
+                    <span *ngIf="loading"
+                          class="spinner-border spinner-border-sm mr-1"></span>
+        CREATE
+      </button>
+    </mat-card-actions>
+  </form>
+</mat-card>

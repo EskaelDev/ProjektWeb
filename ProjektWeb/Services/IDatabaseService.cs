@@ -44,5 +44,7 @@ namespace ProjektWeb.Services
 
         Task<Rate> AddRate(Rate rate);
         Task<Rate> UpdateRate(Rate rate);
+        Task<int> GetElementCount();
+
     }
 }

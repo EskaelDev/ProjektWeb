@@ -13,6 +13,8 @@ using ProjektWeb.Services;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.AspNetCore.Http.Features;
+using System;
 
 namespace ProjektWeb
 {
@@ -71,6 +73,10 @@ namespace ProjektWeb
             {
                 configuration.RootPath = "ClientApp/dist";
             });
+            services.Configure<FormOptions>(options =>
+            {
+                options.MemoryBufferThreshold = Int32.MaxValue;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -97,6 +103,7 @@ namespace ProjektWeb
             app.UseStaticFiles();
             app.UseStaticFiles(new StaticFileOptions()
             {
+                ServeUnknownFileTypes = true,
                 FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot")),
                 RequestPath = new PathString("/wwwroot")
             });

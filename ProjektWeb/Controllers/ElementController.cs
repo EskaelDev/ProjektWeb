@@ -5,6 +5,7 @@ using ProjektWeb.Data.Models.Database;
 using ProjektWeb.Services;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -26,16 +27,15 @@ namespace ProjektWeb.Controllers
         }
 
         [AllowAnonymous]
-        [HttpGet("all/{page}")]
-        public async Task<ActionResult<List<Element>>> GetAll(int? page)
+        [HttpGet("all/{page}/{pagesize}")]
+        public async Task<ActionResult<List<Object>>> GetAll(int? page, int? pagesize)
         {
-            if (page == null)
-                page = 1;
-            var result = await _elementService.GetMany(page);
+            var result = await _elementService.GetMany(page.GetValueOrDefault(1), pagesize.GetValueOrDefault(5));
+            var count = await _elementService.GetCount();
             if (result.Count <= 0)
                 return NoContent();
             else
-                return Ok(result);
+                return Ok(new { movies = result, count = count });
         }
 
         [HttpPost("save")]
@@ -115,10 +115,11 @@ namespace ProjektWeb.Controllers
             return NoContent();
         }
 
-        [HttpPost]
-        public async Task UploadFile()
+        [HttpPost("uploadfile")]
+        public async Task<ActionResult<string>> UploadFile()
         {
-            await _imageService.SaveFile(HttpContext.Request.Form);
+            var result = new { path = await _imageService.SaveFile(HttpContext.Request.Form) };
+            return Ok(result);
         }
     }
 }

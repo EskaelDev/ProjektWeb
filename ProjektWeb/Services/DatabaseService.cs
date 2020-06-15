@@ -183,5 +183,10 @@ namespace ProjektWeb.Services
             databaseContext.SaveChanges();
             return Task.FromResult(GetRatesByAuthor(rate.Author).Where(x => x.ElementId == rate.ElementId && x.IsDeleted == false).FirstOrDefault());
         }
+        public Task<int> GetElementCount()
+        {
+            return databaseContext.Elements.Where(x => !x.IsDeleted).CountAsync();
+        }
+
     }
 }

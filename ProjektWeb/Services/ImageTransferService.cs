@@ -33,35 +33,35 @@ namespace ProjektWeb.Services
             return null;
         }
 
-        async Task<bool> SaveFileOnDisk(IFormFile file)
+        async Task<string> SaveFileOnDisk(IFormFile file)
         {
             try
             {
-                using (var fileStream = new FileStream(Path.Combine(DirPath, file.FileName), FileMode.Create))
+                string path = Path.Combine(DirPath, file.FileName + ".png");
+                using (var fileStream = new FileStream(path, FileMode.Create))
                 {
                     await file.CopyToAsync(fileStream);
                 }
-                return true;
+                return Path.Combine("/wwwroot/elements/images", file.FileName + ".png");
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
             }
-            return false;
+            return null;
         }
 
-        public async Task<bool> SaveFile(IFormCollection httpRequest)
+        public async Task<string> SaveFile(IFormCollection httpRequest)
         {
             try
             {
-                await SaveFileOnDisk(GetFileFromHeader(httpRequest));
-                return true;
+                return await SaveFileOnDisk(GetFileFromHeader(httpRequest));
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
             }
-            return false;
+            return null;
         }
 
     }

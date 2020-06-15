@@ -10,17 +10,16 @@ namespace ProjektWeb.Services
 {
     public class ElementService : IElementService
     {
-        public int PageSize => 12;
         private IDatabaseService _databaseService;
-
+ 
         public ElementService(IDatabaseService databaseService)
         {
             _databaseService = databaseService;
         }
-
-        public Task<List<Element>> GetMany(int? pageNumber)
+ 
+        public Task<List<Element>> GetMany(int pageNumber, int pageSize)
         {
-            var elemList = _databaseService.GetLazyAllElements().Skip(pageNumber.GetValueOrDefault(0) * PageSize).Take(PageSize).ToList();
+            var elemList = _databaseService.GetLazyAllElements().Skip(pageNumber * pageSize).Take(pageSize).ToList();
             elemList.ForEach(elem => _databaseService.GetTagsByElementId(elem.Id).ToList());
             return Task.FromResult(elemList);
         }
@@ -48,6 +47,10 @@ namespace ProjektWeb.Services
             if (element != null)
                 element.Tags = _databaseService.GetTagsByElementId(element.Id).ToList();
             return element;
+        }
+        public async Task<int> GetCount()
+        {
+            return await _databaseService.GetElementCount();
         }
 
         public async Task<bool> Delete(int id)
