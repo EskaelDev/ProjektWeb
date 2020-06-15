@@ -188,5 +188,11 @@ namespace ProjektWeb.Services
             return databaseContext.Elements.Where(x => !x.IsDeleted).CountAsync();
         }
 
+        public Task<Tag> UpdateTag(Tag tag)
+        {
+            databaseContext.Tags.Update(tag);
+            databaseContext.SaveChanges();
+            return Task.FromResult<Tag>(null);
+        }
     }
 }

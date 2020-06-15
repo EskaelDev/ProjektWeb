@@ -75,12 +75,11 @@ namespace ProjektWeb.Services
             var element = _databaseService.GetElementById(newElement.Id).FirstOrDefault();
             if(element != null)
             {
-
-                var oldRates = _databaseService.GetRatesByElementId(newElement.Id);
-                foreach(Rate rate in oldRates)
+                var oldTags = _databaseService.GetTagsByElementId(newElement.Id);
+                foreach(Tag tag in oldTags)
                 {
-                    rate.IsDeleted = true;
-                    await _databaseService.UpdateRate(rate);
+                    tag.IsDeleted = true;
+                    await _databaseService.UpdateTag(tag);
                 }
 
                 element.Description = newElement.Description;
