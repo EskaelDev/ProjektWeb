@@ -75,6 +75,14 @@ namespace ProjektWeb.Services
             var element = _databaseService.GetElementById(newElement.Id).FirstOrDefault();
             if(element != null)
             {
+
+                var oldRates = _databaseService.GetRatesByElementId(newElement.Id);
+                foreach(Rate rate in oldRates)
+                {
+                    rate.IsDeleted = true;
+                    _databaseService.UpdateRate(rate);
+                }
+
                 element.Description = newElement.Description;
                 element.Tags = newElement.Tags != null ? newElement.Tags.Select(x => new Tag { Name = x }).ToList() : null;
                 element.ImagePath = newElement.ImagePath;
